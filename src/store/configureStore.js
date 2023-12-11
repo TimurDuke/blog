@@ -1,13 +1,16 @@
-import {combineReducers} from "redux";
-import thunk from "redux-thunk";
-import {configureStore} from "@reduxjs/toolkit";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import {articlesAPI} from "../services/ArticlesService";
+import articlesSlice from "./slices/articlesSlice";
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({
+    articles: articlesSlice.reducer,
+    [articlesAPI.reducerPath]: articlesAPI.reducer,
+});
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: [thunk],
-    devTools: true,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(articlesAPI.middleware)
 })
 
 export default store;
