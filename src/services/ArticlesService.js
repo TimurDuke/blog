@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {apiUrl} from "../config";
+import {ARTICLES_LIMIT_COUNT} from "../components/constants";
 
 export const articlesAPI = createApi({
     reducerPath: 'articlesAPI',
@@ -7,8 +8,8 @@ export const articlesAPI = createApi({
     tagTypes: ['Articles'],
     endpoints: (build) => ({
         getAllArticles: build.query({
-            query: () => ({
-                url: 'articles'
+            query: (page = 1) => ({
+                url: `articles?limit=${ARTICLES_LIMIT_COUNT}&offset=${page}`
             }),
             providesTags: (result) =>
                 result.articles

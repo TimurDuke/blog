@@ -1,0 +1,1 @@
+export const ARTICLES_LIMIT_COUNT = 5;
