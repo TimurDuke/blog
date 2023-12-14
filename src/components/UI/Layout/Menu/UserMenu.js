@@ -35,9 +35,12 @@ const UserMenu = ({ user }) => {
                 Create article
             </Button>
             <Box sx={{display: 'flex', alignItems: 'center', margin: '0 20px'}}>
-                <Typography sx={{marginRight: '10px', color: '#262626'}} fontSize="large">
+                <Button
+                    onClick={handleOpenUserMenu}
+                    sx={{marginRight: '10px', color: '#262626', textTransform: 'capitalize', fontSize: '18px'}}
+                >
                     {user.username}
-                </Typography>
+                </Button>
                 <Box sx={{flexGrow: 0}}>
                     <Tooltip title="Edit profile">
                         <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
