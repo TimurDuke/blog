@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Avatar, Box, Card, CardContent, styled, Typography} from "@mui/material";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/FavoriteBorder';
 import {Link} from "react-router-dom";
 
 const CardInnerContent = styled(CardContent)({
@@ -65,7 +65,7 @@ const ArticleCard = (
                         {title}
                     </Typography>
                     <Box style={{display: "flex"}}>
-                        <FavoriteBorderIcon
+                        <FavoriteIcon
                             color="action"
                             style={{marginRight: '3px', cursor: 'pointer'}}
                         />

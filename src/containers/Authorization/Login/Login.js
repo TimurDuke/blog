@@ -1,11 +1,16 @@
 import React from 'react';
+import {fieldLoginConfig} from "../../../constants";
+import AuthorizationForm from "../../../components/AuthorizationForm";
 
 const Login = () => {
     console.log('Login')
     return (
-        <div>
-            Login page
-        </div>
+        <>
+            <AuthorizationForm
+                isRegister={false}
+                fieldConfig={fieldLoginConfig}
+            />
+        </>
     );
 };
 
