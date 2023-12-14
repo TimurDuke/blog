@@ -5,10 +5,6 @@ const usernameConfig = {
         required: 'Username is required.',
         minLength: { value: 3, message: 'Your username needs to be at least 3 characters.' },
         maxLength: { value: 20, message: 'Your username must be 20 characters or less.' },
-        pattern: {
-            value: /^\S*$/,
-            message: 'Spaces are not allowed.',
-        },
     },
 };
 

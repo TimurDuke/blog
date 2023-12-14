@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {CardContent} from "@mui/material";
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import LoginIcon from '@mui/icons-material/Login';
@@ -16,18 +16,21 @@ import {
     TermsDivInner,
     InputCheckbox,
     TermsText,
-    TermsError,
+    FormError,
 } from './AuthorizationFormStyles';
 import {getRepeatPasswordRules} from "../../utils/authUtils";
 
-const AuthorizationForm = ({isRegister, fieldConfig}) => {
+const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, error}) => {
+    const [generalError, setGeneralError] = useState('');
 
     const {
         register,
         handleSubmit ,
         control,
+        setError,
+        clearErrors,
+        watch,
         formState: { errors },
-        watch
     } = useForm({
         defaultValues: {
             ...fieldConfig.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}),
@@ -35,13 +38,34 @@ const AuthorizationForm = ({isRegister, fieldConfig}) => {
         }
     });
 
+    useEffect(() => {
+        if (error && error.errors) {
+            if ("email or password" in error.errors) {
+                setError("email", { type: "server" });
+                setError("password", { type: "server" });
+
+                setGeneralError("Email or password is invalid");
+            } else {
+                Object.keys(error.errors).forEach(key => {
+                    setError(key, {
+                        type: "server",
+                        message: error.errors[key].join(" ")
+                    });
+                });
+            }
+        }
+    }, [error, setError]);
+
+    const clearInvalidError = () => {
+        if (generalError) {
+            setGeneralError("");
+            clearErrors(["email", "password"]);
+        }
+    };
+
     if (isRegister) {
         fieldConfig.find(field => field.name === 'repeatPassword').rules = getRepeatPasswordRules(watch);
     }
-
-    const submitHandler = data => {
-        console.log(data);
-    };
 
     return (
         <AuthCard>
@@ -78,6 +102,7 @@ const AuthorizationForm = ({isRegister, fieldConfig}) => {
                             />
                         </label>
                     ))}
+                    {generalError && <FormError>{generalError}</FormError>}
                     {isRegister &&
                         <TermsDiv>
                             <TermsDivInner>
@@ -95,13 +120,14 @@ const AuthorizationForm = ({isRegister, fieldConfig}) => {
                                     information
                                 </TermsText>
                             </TermsDivInner>
-                            {errors.isAgree && <TermsError>{errors.isAgree.message}</TermsError>}
+                            {errors.isAgree && <FormError>{errors.isAgree.message}</FormError>}
                         </TermsDiv>
                     }
                     <SubmitButton
                         fullWidth
                         size="medium"
-                        loading={false}
+                        onClick={clearInvalidError}
+                        loading={isLoading}
                         loadingPosition="end"
                         variant="contained"
                         endIcon={isRegister ? <AppRegistrationIcon/> : <LoginIcon/>}
@@ -130,5 +156,8 @@ export default AuthorizationForm;
 
 AuthorizationForm.propTypes = {
     isRegister: PropTypes.bool.isRequired,
+    submitHandler: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    error: PropTypes.object,
     fieldConfig: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

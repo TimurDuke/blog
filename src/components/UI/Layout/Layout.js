@@ -1,13 +1,10 @@
 import React from 'react';
-import {Box, Button, Container, Grid, styled, Typography} from "@mui/material";
+import {Box, Container, Grid, styled, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
-
-const AuthorizationButton = styled(Button)({
-    textTransform: 'none',
-    marginLeft: '20px',
-    fontSize: '18px',
-});
+import {useSelector} from "react-redux";
+import Anonymous from "./Menu/Anonymous";
+import UserMenu from "./Menu/UserMenu";
 
 const WrapperBox = styled(Box)({
     padding: '20px 15px',
@@ -16,7 +13,8 @@ const WrapperBox = styled(Box)({
 });
 
 const Layout = ({children}) => {
-    console.log('Layout')
+    const user = useSelector(state => state.user.user);
+
     return (
         <>
             <WrapperBox>
@@ -36,22 +34,7 @@ const Layout = ({children}) => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <AuthorizationButton
-                            component={Link}
-                            to="/login"
-                            color="primary"
-                            variant="outlined"
-                        >
-                            Sign In
-                        </AuthorizationButton>
-                        <AuthorizationButton
-                            component={Link}
-                            to="/register"
-                            color="success"
-                            variant="outlined"
-                        >
-                            Sign Up
-                        </AuthorizationButton>
+                        {user ? <UserMenu user={user}/> : <Anonymous/>}
                     </Grid>
                 </Grid>
             </WrapperBox>

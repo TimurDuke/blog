@@ -55,8 +55,8 @@ export const TermsText = myCustomStyled.p`
     font-size: 14px;
 `;
 
-export const TermsError = myCustomStyled.p`
-    margin: 4px 0 0;
+export const FormError = myCustomStyled.p`
+    margin: 4px 0 10px 0;
     font-size: 0.75rem;
     color: #d32f2f;
 `;

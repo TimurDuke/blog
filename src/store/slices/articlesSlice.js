@@ -17,9 +17,8 @@ const articlesSlice = createSlice({
     extraReducers: (builder) => {
         builder.addMatcher(
             articlesAPI.endpoints.getAllArticles.matchFulfilled,
-            (state, action) => {
-                const { articles } = action.payload;
-                state.articles = articles
+            (state, { payload }) => {
+                state.articles = payload.articles
             },
         );
     },
