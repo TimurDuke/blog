@@ -1,7 +1,18 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {Avatar, Box, Button, Grid, IconButton, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
+import {
+    Avatar,
+    Box,
+    Button,
+    Grid,
+    IconButton,
+    Menu,
+    MenuItem,
+    Tooltip,
+    Typography
+} from "@mui/material";
 import {logoutUser} from "../../../../store/actions/userActions";
 
 const UserMenu = ({ user }) => {
@@ -64,7 +75,14 @@ const UserMenu = ({ user }) => {
                         onClose={handleCloseUserMenu}
                     >
                         <MenuItem onClick={handleCloseUserMenu}>
-                            <Typography textAlign="center">Edit profile</Typography>
+                            <Typography
+                                textAlign="center"
+                                component={Link}
+                                to='/user/edit_profile'
+                                sx={{ textDecoration: 'none', color: '#000' }}
+                            >
+                                Edit profile
+                            </Typography>
                         </MenuItem>
                     </Menu>
                 </Box>

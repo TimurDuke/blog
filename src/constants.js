@@ -3,8 +3,8 @@ const usernameConfig = {
     label: 'Username',
     rules: {
         required: 'Username is required.',
-        minLength: { value: 3, message: 'Your username needs to be at least 3 characters.' },
-        maxLength: { value: 20, message: 'Your username must be 20 characters or less.' },
+        minLength: {value: 3, message: 'Your username needs to be at least 3 characters.'},
+        maxLength: {value: 20, message: 'Your username must be 20 characters or less.'},
     },
 };
 
@@ -21,36 +21,52 @@ const emailConfig = {
     },
 }
 
-const passwordConfig = {
-    name: 'password',
-    label: 'Password',
-    type: 'password',
-    rules: {
-        required: 'Password is required.',
-        minLength: { value: 6, message: 'Your password needs to be at least 6 characters.' },
-        maxLength: { value: 40, message: 'Your password must be 40 characters or less.' },
-        pattern: {
-            value: /^\S*$/,
-            message: 'Spaces are not allowed.',
-        },
-    },
-}
+const passwordConfig = (name, label) => {
+    let rules = {
+        minLength: {value: 6, message: 'Your password needs to be at least 6 characters.'},
+        maxLength: {value: 40, message: 'Your password must be 40 characters or less.'},
+    };
 
-const repeatPasswordConfig = {
-    name: 'repeatPassword',
-    label: 'Repeat Password',
-    type: 'password',
-    // Rules will be added later, using the watch function
-}
+    if (label !== 'New Password') {
+        rules = {
+            ...rules,
+            required: 'Password is required.',
+            pattern: {
+                value: /^\S*$/,
+                message: 'Spaces are not allowed.',
+            }
+        };
+    }
+
+    return {
+        name,
+        label,
+        type: 'password',
+        rules,
+    };
+};
+
+const imageConfig = {
+    name: 'image',
+    label: 'Avatar image',
+    type: 'file',
+};
 
 export const fieldRegisterConfig = [
     usernameConfig,
     emailConfig,
-    passwordConfig,
-    repeatPasswordConfig
+    passwordConfig('password', 'Password'),
+    passwordConfig('repeatPassword', 'Repeat Password'),
 ];
 
 export const fieldLoginConfig = [
     emailConfig,
-    passwordConfig,
+    passwordConfig('password', 'Password'),
+];
+
+export const fieldEditProfileConfig = [
+    usernameConfig,
+    emailConfig,
+    passwordConfig('password', 'New Password'),
+    imageConfig,
 ];

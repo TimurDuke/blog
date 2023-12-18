@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {apiUrl} from "../config";
+import {getHeaders} from "../utils/headerUtils";
 
 export const userAPI = createApi({
     reducerPath: 'userAPI',
@@ -20,7 +21,15 @@ export const userAPI = createApi({
                body: userData,
            })
         }),
+        editUser: build.mutation({
+            query: (userData) => ({
+                url: 'user',
+                method: 'PUT',
+                body: userData,
+                headers: getHeaders()
+            })
+        }),
     }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation  } = userAPI;
+export const { useRegisterUserMutation, useLoginUserMutation, useEditUserMutation } = userAPI;

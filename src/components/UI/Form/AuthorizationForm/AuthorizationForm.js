@@ -5,20 +5,22 @@ import LoginIcon from '@mui/icons-material/Login';
 import {Link} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
 import PropTypes from "prop-types";
+import {getRepeatPasswordRules} from "../../../../utils/formUtils";
 import {
-    AuthCard,
-    AuthTitle,
-    InputLabel,
-    Input,
-    SubmitButton,
     AccountCheckBlock,
     TermsDiv,
     TermsDivInner,
     InputCheckbox,
     TermsText,
-    FormError,
 } from './AuthorizationFormStyles';
-import {getRepeatPasswordRules} from "../../utils/authUtils";
+import {
+    FormCard,
+    FormTitle,
+    InputLabel,
+    Input,
+    SubmitButton,
+    FormError,
+} from "../FormStyles";
 
 const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, error}) => {
     const [generalError, setGeneralError] = useState('');
@@ -40,6 +42,7 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
 
     useEffect(() => {
         if (error && error.errors) {
+            // Handle login errors
             if ("email or password" in error.errors) {
                 setError("email", { type: "server" });
                 setError("password", { type: "server" });
@@ -68,11 +71,11 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
     }
 
     return (
-        <AuthCard>
+        <FormCard>
             <CardContent sx={{padding: '24px'}}>
-                <AuthTitle variant="h5">
+                <FormTitle variant="h5">
                     {isRegister ? 'Create new account' : 'Sign In'}
-                </AuthTitle>
+                </FormTitle>
                 <form onSubmit={handleSubmit(submitHandler)}>
                     {fieldConfig.map(({ name, label, rules, type }) => (
                         <label key={name} htmlFor={name}>
@@ -148,7 +151,7 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
                     </AccountCheckBlock>
                 </form>
             </CardContent>
-        </AuthCard>
+        </FormCard>
     );
 }
 

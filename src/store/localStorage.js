@@ -23,3 +23,15 @@ export const loadFromLocalStorage = () => {
         return undefined;
     }
 };
+
+export const getToken = () => {
+    try {
+        const user = JSON.parse(localStorage.getItem('state'));
+
+        return user.user.user.token;
+    } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error(e);
+        return undefined;
+    }
+};

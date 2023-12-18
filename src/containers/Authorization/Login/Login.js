@@ -1,7 +1,7 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {fieldLoginConfig} from "../../../constants";
-import AuthorizationForm from "../../../components/AuthorizationForm";
+import AuthorizationForm from "../../../components/UI/Form/AuthorizationForm";
 import {useLoginUserMutation} from "../../../services/UserService";
 
 const Login = () => {
