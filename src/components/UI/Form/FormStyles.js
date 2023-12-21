@@ -2,7 +2,12 @@ import {Card, styled, TextField, Typography} from "@mui/material";
 import {LoadingButton} from "@mui/lab";
 import myCustomStyled from "@emotion/styled";
 
-export const FormCard = styled(Card)({
+export const FormCardLg = styled(Card)({
+    maxWidth: '100%',
+    margin: '0 auto',
+});
+
+export const FormCardSm = styled(Card)({
     maxWidth: '425px',
     margin: '0 auto',
 });

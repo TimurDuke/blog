@@ -2,7 +2,7 @@ import React from 'react';
 import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useGetArticleQuery} from "../../services/ArticlesService";
-import ArticleCard from "../ArticleCard";
+import ArticleCard from "../../components/ArticleCard";
 import {createFormattedParagraphs, formattedDate} from "../../utils/articleUtils";
 
 const ArticleDetails = () => {

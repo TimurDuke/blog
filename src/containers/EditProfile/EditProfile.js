@@ -2,9 +2,10 @@ import React from 'react';
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import EditProfileForm from "../../components/UI/Form/EditProfileForm";
-import {fieldEditProfileConfig} from "../../constants";
+import {fieldEditProfileConfig} from "../../utils/inputRuleUtils";
 import {useUploadImageMutation} from "../../services/imgBbService";
 import {useEditUserMutation} from "../../services/UserService";
+import {articlesPath} from "../../routes/routePaths";
 
 const getUsersModifiedFields = (currentData, user) => {
     const originalData = {
@@ -46,10 +47,10 @@ const EditProfile = () => {
                 modifiedData.image = data['display_url'];
 
                 await editUser({user: modifiedData}).unwrap();
-                navigate('/');
+                navigate(articlesPath);
             } else {
                 await editUser({user: modifiedData}).unwrap();
-                navigate('/');
+                navigate(articlesPath);
             }
         }
     };

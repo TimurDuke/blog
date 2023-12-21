@@ -52,6 +52,32 @@ const imageConfig = {
     type: 'file',
 };
 
+const articleTitleConfig = {
+    name: 'title',
+    label: 'Title',
+    rules: {
+        required: 'Title is required.',
+        maxLength: {value: 101, message: 'Your title must be 100 characters or less.'},
+    }
+};
+
+const articleDescriptionConfig = {
+    name: 'description',
+    label: 'Short description',
+    rules: {
+        required: 'Description is required.',
+        maxLength: {value: 201, message: 'Your description must be 200 characters or less.'},
+    }
+};
+
+const articleBodyConfig = {
+    name: 'body',
+    label: 'Text',
+    rules: {
+        required: 'Text is required.',
+    }
+};
+
 export const fieldRegisterConfig = [
     usernameConfig,
     emailConfig,
@@ -69,4 +95,10 @@ export const fieldEditProfileConfig = [
     emailConfig,
     passwordConfig('password', 'New Password'),
     imageConfig,
+];
+
+export const fieldArticleConfig = [
+    articleTitleConfig,
+    articleDescriptionConfig,
+    articleBodyConfig,
 ];

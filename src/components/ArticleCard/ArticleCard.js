@@ -1,43 +1,16 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Avatar, Box, Card, CardContent, styled, Typography} from "@mui/material";
+import {Avatar, Box, Card, CardContent, Typography} from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/FavoriteBorder';
 import {Link} from "react-router-dom";
-
-const CardInnerContent = styled(CardContent)({
-    display: "flex",
-    justifyContent: 'space-between',
-    textDecoration: 'none',
-    color: '#404040',
-});
-
-const LeftBlock = styled(Box)({
-    width: '70%'
-});
-
-const RightBlock = styled(Box)({
-    width: '20%',
-    display: 'flex',
-    justifyContent: 'flex-end',
-});
-
-const ArticleTitleBlock = styled(Box)({
-    display: "flex",
-    alignItems: "flex-start",
-    marginBottom: '10px',
-});
-
-const TagsBlock = styled(Box)({
-    display: 'flex',
-    gap: '10px',
-    marginBottom: '10px',
-});
-
-const Tag = styled(Typography)({
-    padding: '3px 4px',
-    border: '1px solid #404040',
-    borderRadius: '3px',
-});
+import {
+    CardInnerContent,
+    LeftBlock,
+    RightBlock,
+    ArticleTitleBlock,
+    TagsBlock,
+    Tag,
+} from "./ArticleCardStyles";
 
 const ArticleCard = (
     {

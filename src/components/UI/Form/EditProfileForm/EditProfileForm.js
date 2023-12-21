@@ -5,7 +5,7 @@ import {CardContent} from "@mui/material";
 import DoneIcon from '@mui/icons-material/Done';
 import {useSelector} from "react-redux";
 import {
-    FormCard,
+    FormCardSm,
     FormTitle,
     Input,
     InputLabel,
@@ -30,7 +30,7 @@ const EditProfileForm = ({fieldConfig, submitHandler, isLoading}) => {
     };
 
     return (
-        <FormCard>
+        <FormCardSm>
             <CardContent>
                 <FormTitle variant="h5">
                     Edit Profile
@@ -93,7 +93,7 @@ const EditProfileForm = ({fieldConfig, submitHandler, isLoading}) => {
                     </SubmitButton>
                 </form>
             </CardContent>
-        </FormCard>
+        </FormCardSm>
     );
 };
 

@@ -14,13 +14,14 @@ import {
     TermsText,
 } from './AuthorizationFormStyles';
 import {
-    FormCard,
+    FormCardSm,
     FormTitle,
     InputLabel,
     Input,
     SubmitButton,
     FormError,
 } from "../FormStyles";
+import {loginPath, registerPath} from "../../../../routes/routePaths";
 
 const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, error}) => {
     const [generalError, setGeneralError] = useState('');
@@ -71,7 +72,7 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
     }
 
     return (
-        <FormCard>
+        <FormCardSm>
             <CardContent sx={{padding: '24px'}}>
                 <FormTitle variant="h5">
                     {isRegister ? 'Create new account' : 'Sign In'}
@@ -141,17 +142,17 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
                     <AccountCheckBlock fontSize="14px">
                         {isRegister ? 'Already have an account?' : 'Don’t have an account?'}
                         {isRegister ?
-                            <Link to='/login' style={{color: '#1890ff', textDecoration: 'none', marginLeft: '6px'}}>
+                            <Link to={loginPath} style={{color: '#1890ff', textDecoration: 'none', marginLeft: '6px'}}>
                                 Sign In
                             </Link> :
-                            <Link to='/register' style={{color: '#1890ff', textDecoration: 'none', marginLeft: '6px'}}>
+                            <Link to={registerPath} style={{color: '#1890ff', textDecoration: 'none', marginLeft: '6px'}}>
                                 Sign Up
                             </Link>
                         }
                     </AccountCheckBlock>
                 </form>
             </CardContent>
-        </FormCard>
+        </FormCardSm>
     );
 }
 
