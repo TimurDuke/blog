@@ -1,10 +1,11 @@
 import React from "react";
 import {Navigate} from "react-router-dom";
 import PropTypes from "prop-types";
+import {articlesPath} from "./routePaths";
 
 const ProtectedRoute = ({isAllowed, children}) => {
     if (!isAllowed) {
-        return <Navigate to="/" replace />;
+        return <Navigate to={articlesPath} replace />;
     }
 
     return children;

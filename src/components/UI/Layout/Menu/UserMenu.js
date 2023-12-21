@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {
     Avatar,
     Box,
@@ -14,9 +14,11 @@ import {
     Typography
 } from "@mui/material";
 import {logoutUser} from "../../../../store/actions/userActions";
+import {articlesPath, logoutPath} from "../../../../routes/routePaths";
 
 const UserMenu = ({ user }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -26,6 +28,11 @@ const UserMenu = ({ user }) => {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const logoutUserHandler = () => {
+        dispatch(logoutUser());
+        navigate(articlesPath, { state: { from: logoutPath } });
     };
 
     return (
@@ -41,6 +48,8 @@ const UserMenu = ({ user }) => {
                 variant='outlined'
                 color='success'
                 size='small'
+                component={Link}
+                to='/new-article'
                 sx={{textTransform: 'none', color: '#52C41A', borderColor: '#52C41A', fontSize: '15px'}}
             >
                 Create article
@@ -78,7 +87,7 @@ const UserMenu = ({ user }) => {
                             <Typography
                                 textAlign="center"
                                 component={Link}
-                                to='/user/edit_profile'
+                                to='/user/edit-profile'
                                 sx={{ textDecoration: 'none', color: '#000' }}
                             >
                                 Edit profile
@@ -91,7 +100,7 @@ const UserMenu = ({ user }) => {
                 variant='outlined'
                 color='inherit'
                 size='medium'
-                onClick={() => dispatch(logoutUser())}
+                onClick={logoutUserHandler}
                 sx={{textTransform: 'capitalize', fontSize: '16px'}}
             >
                 Log out

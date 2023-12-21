@@ -1,8 +1,9 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
-import {fieldLoginConfig} from "../../../constants";
+import {fieldLoginConfig} from "../../../utils/inputRuleUtils";
 import AuthorizationForm from "../../../components/UI/Form/AuthorizationForm";
 import {useLoginUserMutation} from "../../../services/UserService";
+import {articlesPath, loginPath} from "../../../routes/routePaths";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Login = () => {
         try {
             await loginUser({ user }).unwrap();
 
-            navigate('/');
+            navigate(articlesPath, { state: { from: loginPath } });
             // eslint-disable-next-line no-empty
         } catch (e) {}
     };

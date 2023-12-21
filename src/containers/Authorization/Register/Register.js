@@ -1,8 +1,9 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
 import AuthorizationForm from "../../../components/UI/Form/AuthorizationForm";
-import {fieldRegisterConfig} from "../../../constants";
+import {fieldRegisterConfig} from "../../../utils/inputRuleUtils";
 import {useRegisterUserMutation} from "../../../services/UserService";
+import {articlesPath, registerPath} from "../../../routes/routePaths";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -15,8 +16,12 @@ const Register = () => {
             password: userData.password,
         };
 
-        await registerUser({user}).unwrap();
-        navigate('/');
+        try {
+            await registerUser({user}).unwrap();
+            navigate(articlesPath, { state: { from: registerPath } });
+
+            // eslint-disable-next-line no-empty
+        } catch (e) {}
     };
 
     return (
