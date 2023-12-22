@@ -29,7 +29,7 @@ const ArticleDetails = () => {
 
     const deleteArticleHandler = async () => {
         try {
-            await deleteArticle(slug);
+            await deleteArticle(slug).unwrap();
             navigate(articlesPath);
             // eslint-disable-next-line no-empty
         } catch (e) {}

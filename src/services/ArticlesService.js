@@ -2,14 +2,19 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {apiUrl} from "../config";
 import {ARTICLES_LIMIT_COUNT} from "../components/constants";
 import {getHeaders} from "../utils/headerUtils";
-import {setError} from "../store/actions/errorActions";
+import {showNotification} from "../store/actions/notificationActions";
+import {handleNotification} from "../notificationHelper";
 
 const baseQuery = fetchBaseQuery({ baseUrl: apiUrl });
 
 const baseQueryWithRejection = async (args, api, extraOptions) => {
     const result = await baseQuery(args, api, extraOptions);
+
     if (result.error) {
-        api.dispatch(setError(result.error.data?.message || result.error.status));
+        api.dispatch(showNotification({
+            message: result.error.data?.message || `An error occurred: ${result.error.status}`,
+            type: 'error'
+        }));
     }
     return result;
 };
@@ -25,9 +30,9 @@ export const articlesAPI = createApi({
                 headers: getHeaders()
             }),
             keepUnusedDataFor: 5,
-            providesTags: (result) => result.articles
+            providesTags: (result) => result?.articles
                 ? [
-                    ...result.articles.map(({slug}) => ({type: 'Articles', slug})),
+                    ...result?.articles.map(({slug}) => ({type: 'Articles', slug})),
                     {type: 'Articles', slug: 'LIST'},
                 ]
                 : [{type: 'Articles', slug: 'LIST'}],
@@ -46,6 +51,14 @@ export const articlesAPI = createApi({
                 headers: getHeaders()
             }),
             invalidatesTags: [{type: 'Articles', slug: 'LIST'}],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                await handleNotification(
+                    queryFulfilled,
+                    dispatch,
+                    'The article has been successfully created!',
+                    'success'
+                );
+            },
         }),
         deleteArticle: build.mutation({
             query: (slug) => ({
@@ -54,6 +67,14 @@ export const articlesAPI = createApi({
                 headers: getHeaders()
             }),
             invalidatesTags: [{type: 'Articles', slug: 'LIST'}],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                await handleNotification(
+                    queryFulfilled,
+                    dispatch,
+                    'The article has been successfully deleted!',
+                    'success'
+                );
+            },
         }),
     }),
 });
