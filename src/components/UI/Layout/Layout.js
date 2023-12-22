@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import Anonymous from "./Menu/Anonymous";
 import UserMenu from "./Menu/UserMenu";
+import {articlesPath} from "../../../routes/routePaths";
 
 const WrapperBox = styled(Box)({
     padding: '20px 15px',
@@ -26,7 +27,8 @@ const Layout = ({children}) => {
                     <Grid item>
                         <Typography
                             component={Link}
-                            to='/'
+                            to={articlesPath}
+                            state={{ articlesPage: 1 }}
                             sx={{textDecoration: 'none', color: '#000'}}
                             variant='h5'
                         >

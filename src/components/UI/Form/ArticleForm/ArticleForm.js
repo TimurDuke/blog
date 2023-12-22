@@ -115,7 +115,6 @@ const ArticleForm = ({fieldConfig, submitHandler, isLoading}) => {
                                     variant='outlined'
                                     color='error'
                                     onClick={() => remove(index)}
-                                    sx={{textTransform: 'capitalize'}}
                                     disabled={isLoading}
                                 >
                                     Delete
@@ -126,7 +125,6 @@ const ArticleForm = ({fieldConfig, submitHandler, isLoading}) => {
                                     variant='outlined'
                                     color='primary'
                                     onClick={() => append({tag: ''})}
-                                    sx={{textTransform: 'capitalize'}}
                                     disabled={lastTag === '' || isLoading}
                                 >
                                     Add Tag

@@ -5,6 +5,8 @@ export const CardInnerContent = styled(CardContent)({
     justifyContent: 'space-between',
     textDecoration: 'none',
     color: '#404040',
+    paddingBottom: '0',
+    marginBottom: '10px',
 });
 
 export const LeftBlock = styled(Box)({
@@ -26,11 +28,11 @@ export const ArticleTitleBlock = styled(Box)({
 export const TagsBlock = styled(Box)({
     display: 'flex',
     gap: '10px',
-    marginBottom: '10px',
 });
 
 export const Tag = styled(Typography)({
     padding: '3px 4px',
-    border: '1px solid #404040',
+    border: '1px solid #00000080',
+    color: '#00000080',
     borderRadius: '3px',
 });

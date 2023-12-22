@@ -57,7 +57,7 @@ const UserMenu = ({ user }) => {
             <Box sx={{display: 'flex', alignItems: 'center', margin: '0 20px'}}>
                 <Button
                     onClick={handleOpenUserMenu}
-                    sx={{marginRight: '10px', color: '#262626', textTransform: 'capitalize', fontSize: '18px'}}
+                    sx={{marginRight: '10px', color: '#262626', fontSize: '18px'}}
                 >
                     {user.username}
                 </Button>
@@ -101,7 +101,7 @@ const UserMenu = ({ user }) => {
                 color='inherit'
                 size='medium'
                 onClick={logoutUserHandler}
-                sx={{textTransform: 'capitalize', fontSize: '16px'}}
+                sx={{fontSize: '16px'}}
             >
                 Log out
             </Button>

@@ -17,7 +17,7 @@ const CreateArticle = () => {
 
         const article = {
             ...data,
-            tags: tagsArray
+            tagList: tagsArray
         };
 
         try {

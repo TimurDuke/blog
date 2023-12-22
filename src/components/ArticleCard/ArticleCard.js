@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from "prop-types";
-import {Avatar, Box, Card, CardContent, Typography} from "@mui/material";
+import {Avatar, Box, Button, Card, CardContent, Typography} from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/FavoriteBorder';
 import {Link} from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ import {
     TagsBlock,
     Tag,
 } from "./ArticleCardStyles";
+import PromptModal from "../UI/ConfirmPopover";
 
 const ArticleCard = (
     {
@@ -22,66 +23,121 @@ const ArticleCard = (
         tagList,
         date,
         body = [],
+        isDetails = false,
+        deleteArticle = () => {},
     }
-) => (
-    <Card style={{marginBottom: !body.length ? '20px' : '0' }}>
-        <CardInnerContent>
-            <LeftBlock>
-                <ArticleTitleBlock>
-                    <Typography
-                        variant="h5"
-                        color="primary"
-                        style={{marginRight: '15px', textDecoration: 'none'}}
-                        component={Link}
-                        to={`/articles/${slug}`}
-                    >
-                        {title}
-                    </Typography>
-                    <Box style={{display: "flex"}}>
-                        <FavoriteIcon
-                            color="action"
-                            style={{marginRight: '3px', cursor: 'pointer'}}
-                        />
-                        <Typography>
-                            {favoritesCount}
+) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = (didConfirm) => {
+        if (didConfirm) {
+            deleteArticle();
+        }
+        setAnchorEl(null);
+    };
+
+    return (
+        <Card style={{marginBottom: !body.length ? '20px' : '0' }}>
+            <CardInnerContent>
+                <LeftBlock>
+                    <ArticleTitleBlock>
+                        <Typography
+                            variant="h5"
+                            color="primary"
+                            style={{marginRight: '15px', textDecoration: 'none'}}
+                            component={Link}
+                            to={`/articles/${slug}`}
+                        >
+                            {title}
+                        </Typography>
+                        <Box style={{display: "flex"}}>
+                            <FavoriteIcon
+                                color="action"
+                                style={{marginRight: '3px', cursor: 'pointer'}}
+                            />
+                            <Typography>
+                                {favoritesCount}
+                            </Typography>
+                        </Box>
+                    </ArticleTitleBlock>
+                    <TagsBlock>
+                        {!!tagList?.length && tagList.map(tagName => (
+                            <Tag key={tagName}>
+                                {tagName}
+                            </Tag>
+                        ))}
+                    </TagsBlock>
+                </LeftBlock>
+                <RightBlock>
+                    <Box>
+                        <Typography variant='h6'>
+                            {author['username']}
+                        </Typography>
+                        <Typography fontSize="small" style={{color: '#808080'}}>
+                            {date}
                         </Typography>
                     </Box>
-                </ArticleTitleBlock>
-                <TagsBlock>
-                    {!!tagList?.length && tagList.map(tagName => (
-                        <Tag key={tagName}>
-                            {tagName}
-                        </Tag>
-                    ))}
-                </TagsBlock>
-                <Typography style={{fontSize: '14px'}}>
-                    {description}
-                </Typography>
-            </LeftBlock>
-            <RightBlock>
-                <Box>
-                    <Typography variant='h6'>
-                        {author['username']}
+                    <Avatar
+                        alt="Remy Sharp"
+                        src={author['image']}
+                        sx={{width: 46, height: 46}}
+                        style={{marginLeft: '15px'}}
+                    />
+                </RightBlock>
+            </CardInnerContent>
+            <CardContent sx={{paddingTop: '0'}}>
+                <Box sx={{display: isDetails ? 'flex' : 'block', justifyContent: 'space-between'}}>
+                    <Typography
+                        style={{
+                            fontSize: '14px',
+                            color: isDetails ? '#00000080' : '#000',
+                            marginBottom: '10px',
+                            width: isDetails ? '70%' : '100%',
+                        }}
+                    >
+                        {description}
                     </Typography>
-                    <Typography fontSize="small" style={{color: '#808080'}}>
-                        {date}
-                    </Typography>
+                    {isDetails &&
+                        <Box>
+                            <Button
+                                variant='outlined'
+                                color='error'
+                                size='small'
+                                sx={{fontSize: '14px'}}
+                                onClick={handleClick}
+                            >
+                                Delete
+                            </Button>
+                            <Button
+                                variant='outlined'
+                                color='success'
+                                sx={{marginLeft: '15px', fontSize: '14px'}}
+                                size='small'
+                            >
+                                Edit
+                            </Button>
+                            <PromptModal
+                                open={Boolean(anchorEl)}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                title='Are you sure to delete this article?'
+                            />
+                        </Box>
+                    }
                 </Box>
-                <Avatar
-                    alt="Remy Sharp"
-                    src={author['image']}
-                    sx={{width: 46, height: 46}}
-                    style={{marginLeft: '15px'}}
-                />
-            </RightBlock>
-        </CardInnerContent>
-        {!!body.length &&
-            <CardContent>
-                {body}
+                {isDetails && !!body.length &&
+                    <div>
+                        {body}
+                    </div>
+                }
             </CardContent>
-        }
-    </Card>
-);
+        </Card>
+    );
+}
 
 export default ArticleCard;
 
@@ -94,4 +150,6 @@ ArticleCard.propTypes = {
     tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
     date: PropTypes.string.isRequired,
     body: PropTypes.arrayOf(PropTypes.object),
+    isDetails: PropTypes.bool,
+    deleteArticle: PropTypes.func,
 };
