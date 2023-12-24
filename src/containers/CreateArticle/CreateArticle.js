@@ -10,16 +10,7 @@ const CreateArticle = () => {
 
     const [createArticle, {isLoading}] = useCreateArticleMutation();
 
-    const submitHandler = async data => {
-        const tagsArray = data.tags
-            .map(tagObj => tagObj.tag)
-            .filter(tag => tag.trim() !== '')
-
-        const article = {
-            ...data,
-            tagList: tagsArray
-        };
-
+    const submitHandler = async article => {
         try {
             await createArticle({article}).unwrap();
             navigate(articlesPath);

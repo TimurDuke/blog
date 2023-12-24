@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Avatar, Box, Button, Card, CardContent, Typography} from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/FavoriteBorder';
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 import {
     CardInnerContent,
     LeftBlock,
@@ -27,6 +28,8 @@ const ArticleCard = (
         deleteArticle = () => {},
     }
 ) => {
+    const { user } = useSelector(state => state.user);
+
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
@@ -40,6 +43,10 @@ const ArticleCard = (
         setAnchorEl(null);
     };
 
+    const showActionButton = () => isDetails && author['username'] === user?.username;
+
+    const showArticleBody = () => isDetails && !!body.length;
+
     return (
         <Card style={{marginBottom: !body.length ? '20px' : '0' }}>
             <CardInnerContent>
@@ -49,7 +56,7 @@ const ArticleCard = (
                             variant="h5"
                             color="primary"
                             style={{marginRight: '15px', textDecoration: 'none'}}
-                            component={Link}
+                            component={!isDetails ? Link : Typography}
                             to={`/articles/${slug}`}
                         >
                             {title}
@@ -101,7 +108,7 @@ const ArticleCard = (
                     >
                         {description}
                     </Typography>
-                    {isDetails &&
+                    {showActionButton() &&
                         <Box>
                             <Button
                                 variant='outlined'
@@ -117,6 +124,8 @@ const ArticleCard = (
                                 color='success'
                                 sx={{marginLeft: '15px', fontSize: '14px'}}
                                 size='small'
+                                component={Link}
+                                to={`/articles/${slug}/edit`}
                             >
                                 Edit
                             </Button>
@@ -129,7 +138,7 @@ const ArticleCard = (
                         </Box>
                     }
                 </Box>
-                {isDetails && !!body.length &&
+                {showArticleBody() &&
                     <div>
                         {body}
                     </div>

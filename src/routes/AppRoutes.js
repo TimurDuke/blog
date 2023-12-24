@@ -2,7 +2,6 @@ import React from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {
-    articleDetailPath,
     articlesPath,
     editProfilePath,
     loginPath,
@@ -15,6 +14,7 @@ import {Login, Register} from "../containers/Authorization";
 import EditProfile from "../containers/EditProfile";
 import ProtectedRoute from "./ProtectedRoute";
 import CreateArticle from "../containers/CreateArticle";
+import EditArticle from "../containers/EditArticle";
 
 const AppRoutes = () => {
     const user = useSelector(state => state.user.user);
@@ -23,7 +23,7 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<Navigate to={articlesPath} replace/>}/>
             <Route path={articlesPath} element={<Articles/>}/>
-            <Route path={articleDetailPath} element={<ArticleDetails/>}/>
+            <Route path='/articles/:slug' element={<ArticleDetails/>}/>
             <Route
                 path={loginPath}
                 element={
@@ -53,6 +53,14 @@ const AppRoutes = () => {
                 element={
                     <ProtectedRoute isAllowed={!!user}>
                         <CreateArticle/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path='/articles/:slug/edit'
+                element={
+                    <ProtectedRoute isAllowed={!!user}>
+                        <EditArticle/>
                     </ProtectedRoute>
                 }
             />

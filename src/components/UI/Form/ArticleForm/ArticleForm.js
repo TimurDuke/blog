@@ -16,25 +16,44 @@ const ActionButton = styled(Button)({
     fontSize: '16px',
 });
 
-const ArticleForm = ({fieldConfig, submitHandler, isLoading}) => {
+const ArticleForm = ({
+    fieldConfig = [],
+    submitHandler,
+    isLoading,
+    mode = 'create',
+    initialValues,
+}) => {
     const {
         handleSubmit ,
         control,
         watch,
         formState: { errors },
+        reset
     } = useForm({
-        defaultValues: {
+        defaultValues: initialValues || {
             ...fieldConfig.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}),
-            tags: [{tag: ''}]
+            tags: [{ tag: '' }]
         }
     });
+
+    const [lastTag, setLastTag] = useState('');
 
     const { fields, append, remove } = useFieldArray({
         control,
         name: "tags",
     });
 
-    const [lastTag, setLastTag] = useState('');
+    useEffect(() => {
+        if (initialValues) {
+            reset(initialValues);
+
+            if (initialValues.tags && initialValues.tags.length > 0) {
+                setLastTag(initialValues.tags[initialValues.tags.length - 1].tag);
+            } else {
+                setLastTag('');
+            }
+        }
+    }, [initialValues, reset]);
 
     useEffect(() => {
         // Avoiding unnecessary renders
@@ -47,13 +66,28 @@ const ArticleForm = ({fieldConfig, submitHandler, isLoading}) => {
         return () => subscription.unsubscribe();
     }, [watch, fields.length]);
 
+    const formSubmitHandler = data => {
+        const tagsArray = data.tags
+            .map(tagObj => tagObj.tag)
+            .filter(tag => tag.trim() !== '')
+
+        const article = {
+            ...data,
+            tagList: tagsArray
+        };
+
+        delete article.tags;
+
+        submitHandler(article);
+    };
+
     return (
         <FormCardLg>
             <CardContent sx={{padding: '24px'}}>
                 <FormTitle variant="h6">
-                    Create new article
+                    {mode === 'create' ? 'Create new article' : 'Update article'}
                 </FormTitle>
-                <form onSubmit={handleSubmit(submitHandler)}>
+                <form onSubmit={handleSubmit(formSubmitHandler)}>
                     {fieldConfig.map(({ name, label, rules, type }) => (
                         <label key={name} htmlFor={name}>
                             <InputLabel>
@@ -72,6 +106,8 @@ const ArticleForm = ({fieldConfig, submitHandler, isLoading}) => {
                                         type={type || 'text'}
                                         hiddenLabel
                                         error={!!errors[name]}
+                                        multiline={name === 'body'}
+                                        rows={12}
                                         helperText={errors[name]?.message}
                                         FormHelperTextProps={{
                                             sx: { margin: '4px 0 0' }
@@ -140,8 +176,9 @@ const ArticleForm = ({fieldConfig, submitHandler, isLoading}) => {
                         endIcon={<SendIcon/>}
                         variant="contained"
                         type="submit"
+                        sx={{width: '30%'}}
                     >
-                        <span>Send</span>
+                        <span>{mode === 'create' ? 'Send' : 'Update'}</span>
                     </SubmitButton>
                 </form>
             </CardContent>
@@ -155,4 +192,6 @@ ArticleForm.propTypes = {
     submitHandler: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     fieldConfig: PropTypes.arrayOf(PropTypes.object).isRequired,
+    initialValues: PropTypes.object,
+    mode: PropTypes.string,
 };

@@ -60,6 +60,28 @@ export const articlesAPI = createApi({
                 );
             },
         }),
+        updateArticle: build.mutation({
+            query: (payload) =>
+            {
+                const { slug, article } = payload;
+
+                return {
+                    url: `articles/${slug}`,
+                    method: 'PUT',
+                    body: {article},
+                    headers: getHeaders()
+                }
+            },
+            invalidatesTags: [{type: 'Articles', slug: 'LIST'}],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                await handleNotification(
+                    queryFulfilled,
+                    dispatch,
+                    'The article has been successfully updated!',
+                    'success'
+                );
+            },
+        }),
         deleteArticle: build.mutation({
             query: (slug) => ({
                 url: `articles/${slug}`,
@@ -83,5 +105,6 @@ export const {
     useGetAllArticlesQuery,
     useGetArticleQuery,
     useCreateArticleMutation,
+    useUpdateArticleMutation,
     useDeleteArticleMutation
 } = articlesAPI;
