@@ -11,9 +11,11 @@ const notificationSlice = createSlice({
     name: 'notification',
     initialState,
     reducers: {
-        showNotification: (state, action) => {
-            state.message = action.payload.message;
-            state.type = action.payload.type;
+        showNotification: (state, { payload }) => {
+            const { message, type } = payload;
+
+            state.message = message;
+            state.type = type;
             state.isOpen = true;
         },
         closeNotification: (state) => {
@@ -23,8 +25,11 @@ const notificationSlice = createSlice({
             state.message = '';
             state.type = 'info';
         },
-        setError: (state, {payload}) => {
+        setError: (state, { payload }) => {
             state.error = payload;
+        },
+        clearError: (state) => {
+            state.error = {};
         },
     },
 });

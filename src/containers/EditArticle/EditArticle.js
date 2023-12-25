@@ -5,6 +5,7 @@ import {useGetArticleQuery, useUpdateArticleMutation} from "../../services/Artic
 import ArticleForm from "../../components/UI/Form/ArticleForm";
 import {fieldArticleConfig} from "../../utils/inputRuleUtils";
 import {articlesPath} from "../../routes/routePaths";
+import GoBackButton from "../../components/UI/GoBackButton";
 
 const EditArticle = () => {
     const { slug } = useParams();
@@ -48,6 +49,7 @@ const EditArticle = () => {
 
     return (
         <>
+            <GoBackButton/>
             <ArticleForm
                 mode='update'
                 fieldConfig={fieldArticleConfig}

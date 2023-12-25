@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Button, CardContent, styled} from "@mui/material";
 import {Controller, useFieldArray, useForm} from "react-hook-form";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PropTypes from "prop-types";
 import SendIcon from '@mui/icons-material/Send';
 import myCustomStyled from "@emotion/styled";
 import {FormCardLg, FormTitle, Input, InputLabel, SubmitButton} from "../FormStyles";
+import {clearError} from "../../../../store/actions/notificationActions";
 
 const TagWrapper = myCustomStyled.div`
     display: flex;
@@ -36,6 +37,8 @@ const ArticleForm = ({
             tags: [{ tag: '' }]
         }
     });
+
+    const dispatch = useDispatch();
 
     const [lastTag, setLastTag] = useState('');
 
@@ -70,6 +73,8 @@ const ArticleForm = ({
     }, [watch, fields.length]);
 
     const formSubmitHandler = data => {
+        dispatch(clearError());
+
         const tagsArray = data.tags
             .map(tagObj => tagObj.tag)
             .filter(tag => tag.trim() !== '')
