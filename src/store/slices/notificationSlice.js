@@ -4,6 +4,7 @@ const initialState = {
     message: '',
     type: 'info',
     isOpen: false,
+    error: {},
 };
 
 const notificationSlice = createSlice({
@@ -21,6 +22,9 @@ const notificationSlice = createSlice({
         clearMessageAndType: (state) => {
             state.message = '';
             state.type = 'info';
+        },
+        setError: (state, {payload}) => {
+            state.error = payload;
         },
     },
 });

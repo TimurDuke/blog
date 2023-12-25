@@ -4,4 +4,5 @@ export const {
     showNotification,
     closeNotification,
     clearMessageAndType,
+    setError,
 } = notificationSlice.actions;

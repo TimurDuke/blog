@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, CardContent, styled} from "@mui/material";
 import {Controller, useFieldArray, useForm} from "react-hook-form";
+import {useSelector} from "react-redux";
 import PropTypes from "prop-types";
 import SendIcon from '@mui/icons-material/Send';
 import myCustomStyled from "@emotion/styled";
@@ -37,6 +38,8 @@ const ArticleForm = ({
     });
 
     const [lastTag, setLastTag] = useState('');
+
+    const notificationError = useSelector(state => state.notification.error);
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -105,10 +108,10 @@ const ArticleForm = ({
                                         fullWidth
                                         type={type || 'text'}
                                         hiddenLabel
-                                        error={!!errors[name]}
+                                        error={!!errors[name] || !!notificationError[name]}
                                         multiline={name === 'body'}
                                         rows={12}
-                                        helperText={errors[name]?.message}
+                                        helperText={errors[name]?.message || notificationError[name]}
                                         FormHelperTextProps={{
                                             sx: { margin: '4px 0 0' }
                                         }}
