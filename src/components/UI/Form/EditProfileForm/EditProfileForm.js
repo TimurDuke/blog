@@ -24,9 +24,11 @@ const EditProfileForm = ({fieldConfig, submitHandler, isLoading}) => {
     });
 
     const validateImageFile = (file) => {
-        if (file.type) {
+        if (file?.type) {
             return file.type.startsWith('image/') || 'Only images are allowed';
         }
+
+        return 'Only images are allowed';
     };
 
     return (

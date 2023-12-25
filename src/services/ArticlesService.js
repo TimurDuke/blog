@@ -1,23 +1,8 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {apiUrl} from "../config";
+import {createApi} from "@reduxjs/toolkit/query/react";
 import {ARTICLES_LIMIT_COUNT} from "../components/constants";
 import {getHeaders} from "../utils/headerUtils";
-import {showNotification} from "../store/actions/notificationActions";
 import {handleNotification} from "../notificationHelper";
-
-const baseQuery = fetchBaseQuery({ baseUrl: apiUrl });
-
-const baseQueryWithRejection = async (args, api, extraOptions) => {
-    const result = await baseQuery(args, api, extraOptions);
-
-    if (result.error) {
-        api.dispatch(showNotification({
-            message: result.error.data?.message || `An error occurred: ${result.error.status}`,
-            type: 'error'
-        }));
-    }
-    return result;
-};
+import {baseQueryWithRejection} from "../utils/baseQueryWithRejection";
 
 export const articlesAPI = createApi({
     reducerPath: 'articlesAPI',

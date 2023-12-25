@@ -40,18 +40,21 @@ const EditProfile = () => {
         const modifiedData = getUsersModifiedFields(userData, user);
 
         if (modifiedData) {
-            if (!!modifiedData.image) {
-                // Img url creation
-                const { data } = await uploadImage(modifiedData.image).unwrap();
+            try {
+                if (!!modifiedData.image) {
+                    // Img url creation
+                    const { data } = await uploadImage(modifiedData.image).unwrap();
 
-                modifiedData.image = data['display_url'];
+                    modifiedData.image = data['display_url'];
 
-                await editUser({user: modifiedData}).unwrap();
-                navigate(articlesPath);
-            } else {
-                await editUser({user: modifiedData}).unwrap();
-                navigate(articlesPath);
-            }
+                    await editUser({user: modifiedData}).unwrap();
+                    navigate(articlesPath);
+                } else {
+                    await editUser({user: modifiedData}).unwrap();
+                    navigate(articlesPath);
+                }
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
         }
     };
 

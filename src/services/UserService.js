@@ -1,11 +1,11 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {apiUrl} from "../config";
+import {createApi} from "@reduxjs/toolkit/query/react";
 import {getHeaders} from "../utils/headerUtils";
 import {handleNotification} from "../notificationHelper";
+import {baseQueryWithRejection} from "../utils/baseQueryWithRejection";
 
 export const userAPI = createApi({
     reducerPath: 'userAPI',
-    baseQuery: fetchBaseQuery({baseUrl: apiUrl}),
+    baseQuery: baseQueryWithRejection,
     tagTypes: ['User'],
     endpoints: (build) => ({
         registerUser: build.mutation({
