@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {Button, Grid} from "@mui/material";
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import PropTypes from "prop-types";
-import {Input} from "../FormStyles";
+import {Input} from "../../Forms/FormStyles";
 
 const FileInput = ({field, name, placeholder, error, initialFileName, isLoading}) => {
     const inputRef = useRef();

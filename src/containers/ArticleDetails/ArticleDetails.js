@@ -45,6 +45,7 @@ const ArticleDetails = () => {
                 title={finalArticleData?.title}
                 description={finalArticleData?.description}
                 favoritesCount={finalArticleData?.favoritesCount}
+                isFavorite={finalArticleData?.favorited}
                 tagList={finalArticleData?.tagList}
                 date={formattedDate(finalArticleData['createdAt'])}
                 author={finalArticleData?.author}

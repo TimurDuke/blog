@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import {Avatar, Box, Button, Card, CardContent, Typography} from "@mui/material";
-import FavoriteIcon from '@mui/icons-material/FavoriteBorder';
+import {FavoriteBorder, Favorite} from '@mui/icons-material';
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {
@@ -25,7 +25,10 @@ const ArticleCard = (
         date,
         body = [],
         isDetails = false,
+        isFavorite,
         deleteArticle = () => {},
+        addFavorite = () => {},
+        deleteFavorite = () => {},
     }
 ) => {
     const { user } = useSelector(state => state.user);
@@ -62,11 +65,21 @@ const ArticleCard = (
                             {title}
                         </Typography>
                         <Box style={{display: "flex"}}>
-                            <FavoriteIcon
-                                color="action"
-                                style={{marginRight: '3px', cursor: 'pointer'}}
-                            />
-                            <Typography>
+                            {isFavorite ?
+                                <Favorite
+                                    color="error"
+                                    style={{margin: '5px 3px 0 0', cursor: 'pointer'}}
+                                    onClick={() => deleteFavorite(slug)}
+                                /> :
+                                <FavoriteBorder
+                                    onClick={() => addFavorite(slug)}
+                                    color="action"
+                                    style={{margin: '5px 3px 0 0', cursor: 'pointer'}}
+                                />
+                            }
+                            <Typography
+                                style={{marginTop: '5px'}}
+                            >
                                 {favoritesCount}
                             </Typography>
                         </Box>
@@ -155,10 +168,13 @@ ArticleCard.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     favoritesCount: PropTypes.number.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
     author: PropTypes.object.isRequired,
     tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
     date: PropTypes.string.isRequired,
     body: PropTypes.arrayOf(PropTypes.object),
     isDetails: PropTypes.bool,
     deleteArticle: PropTypes.func,
+    addFavorite: PropTypes.func,
+    deleteFavorite: PropTypes.func,
 };

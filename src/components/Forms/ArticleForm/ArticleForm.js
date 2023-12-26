@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import SendIcon from '@mui/icons-material/Send';
 import myCustomStyled from "@emotion/styled";
 import {FormCardLg, FormTitle, Input, InputLabel, SubmitButton} from "../FormStyles";
-import {clearError} from "../../../../store/actions/notificationActions";
+import {clearError} from "../../../store/actions/notificationActions";
 
 const TagWrapper = myCustomStyled.div`
     display: flex;
@@ -69,8 +69,11 @@ const ArticleForm = ({
             }
         });
 
-        return () => subscription.unsubscribe();
-    }, [watch, fields.length]);
+        return () => {
+            dispatch(clearError());
+            subscription.unsubscribe();
+        };
+    }, [watch, fields.length, dispatch]);
 
     const formSubmitHandler = data => {
         dispatch(clearError());

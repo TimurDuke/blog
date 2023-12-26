@@ -2,7 +2,11 @@ import React, {useEffect} from 'react';
 import {Pagination} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
-import {useGetAllArticlesQuery} from "../../services/ArticlesService";
+import {
+    useAddFavoriteArticleMutation,
+    useDeleteFavoriteArticleMutation,
+    useGetAllArticlesQuery
+} from "../../services/ArticlesService";
 import ArticleCard from "../../components/ArticleCard";
 import {formattedDate} from "../../utils/articleUtils";
 import {setPage} from "../../store/actions/articlesActions";
@@ -17,6 +21,9 @@ const Articles = () => {
     const { user } = useSelector(state => state.user);
 
     const { data, isFetching, refetch} = useGetAllArticlesQuery(page);
+
+    const [addFavorite, {isLoading: addFavoriteLoading}] = useAddFavoriteArticleMutation();
+    const [deleteFavorite, {isLoading: deleteFavoriteLoading}] = useDeleteFavoriteArticleMutation();
 
     const fromPath = location.state?.from;
 
@@ -42,12 +49,30 @@ const Articles = () => {
 
     }, [dispatch, location, navigate]);
 
-    if (isFetching) {
+    if (isFetching || addFavoriteLoading || deleteFavoriteLoading) {
         return <h2>Loading...</h2>
     }
 
     const paginationHandler = (_, selectedPage) => {
         dispatch(setPage(selectedPage));
+    };
+
+    const addFavoriteHandler = async slug => {
+        try {
+            if (slug) {
+                await addFavorite(slug).unwrap();
+            }
+            // eslint-disable-next-line no-empty
+        } catch (e) {}
+    };
+
+    const deleteFavoriteHandler = async slug => {
+        try {
+            if (slug) {
+                await deleteFavorite(slug).unwrap();
+            }
+            // eslint-disable-next-line no-empty
+        } catch (e) {}
     };
 
     return (
@@ -59,9 +84,12 @@ const Articles = () => {
                     title={article.title}
                     description={article.description}
                     favoritesCount={article.favoritesCount}
+                    isFavorite={article.favorited}
                     author={article.author}
                     tagList={article.tagList}
                     date={formattedDate(article['createdAt'])}
+                    addFavorite={addFavoriteHandler}
+                    deleteFavorite={deleteFavoriteHandler}
                 />
             ))}
             {data?.articlesCount &&

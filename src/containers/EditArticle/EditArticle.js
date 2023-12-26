@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useGetArticleQuery, useUpdateArticleMutation} from "../../services/ArticlesService";
-import ArticleForm from "../../components/UI/Form/ArticleForm";
+import ArticleForm from "../../components/Forms/ArticleForm";
 import {fieldArticleConfig} from "../../utils/inputRuleUtils";
 import {articlesPath} from "../../routes/routePaths";
 import GoBackButton from "../../components/UI/GoBackButton";

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
-import AuthorizationForm from "../../../components/UI/Form/AuthorizationForm";
+import AuthorizationForm from "../../../components/Forms/AuthorizationForm";
 import {fieldRegisterConfig} from "../../../utils/inputRuleUtils";
 import {useRegisterUserMutation} from "../../../services/UserService";
 import {articlesPath, registerPath} from "../../../routes/routePaths";

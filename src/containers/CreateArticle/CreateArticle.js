@@ -1,6 +1,6 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
-import ArticleForm from "../../components/UI/Form/ArticleForm";
+import ArticleForm from "../../components/Forms/ArticleForm";
 import {fieldArticleConfig} from "../../utils/inputRuleUtils";
 import {useCreateArticleMutation} from "../../services/ArticlesService";
 import {articlesPath} from "../../routes/routePaths";

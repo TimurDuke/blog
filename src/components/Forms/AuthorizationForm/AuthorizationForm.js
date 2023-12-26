@@ -5,7 +5,8 @@ import LoginIcon from '@mui/icons-material/Login';
 import {Link} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
 import PropTypes from "prop-types";
-import {getRepeatPasswordRules} from "../../../../utils/formUtils";
+import {useDispatch, useSelector} from "react-redux";
+import {getRepeatPasswordRules} from "../../../utils/formUtils";
 import {
     AccountCheckBlock,
     TermsDiv,
@@ -21,10 +22,14 @@ import {
     SubmitButton,
     FormError,
 } from "../FormStyles";
-import {loginPath, registerPath} from "../../../../routes/routePaths";
+import {loginPath, registerPath} from "../../../routes/routePaths";
+import {clearError} from "../../../store/actions/notificationActions";
 
 const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, error}) => {
     const [generalError, setGeneralError] = useState('');
+    const dispatch = useDispatch();
+
+    const notificationError = useSelector(state => state.notification.error);
 
     const {
         register,
@@ -41,6 +46,8 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
         }
     });
 
+    useEffect(() => () => dispatch(clearError()), [dispatch]);
+
     useEffect(() => {
         if (error && error.errors) {
             // Handle login errors
@@ -49,22 +56,19 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
                 setError("password", { type: "server" });
 
                 setGeneralError("Email or password is invalid");
-            } else {
-                Object.keys(error.errors).forEach(key => {
-                    setError(key, {
-                        type: "server",
-                        message: error.errors[key].join(" ")
-                    });
-                });
             }
         }
     }, [error, setError]);
 
-    const clearInvalidError = () => {
+    const formSubmitHandler = data => {
         if (generalError) {
             setGeneralError("");
             clearErrors(["email", "password"]);
         }
+
+        dispatch(clearError());
+
+        submitHandler(data);
     };
 
     if (isRegister) {
@@ -77,7 +81,7 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
                 <FormTitle variant="h5">
                     {isRegister ? 'Create new account' : 'Sign In'}
                 </FormTitle>
-                <form onSubmit={handleSubmit(submitHandler)}>
+                <form onSubmit={handleSubmit(formSubmitHandler)}>
                     {fieldConfig.map(({ name, label, rules, type }) => (
                         <label key={name} htmlFor={name}>
                             <InputLabel>
@@ -95,8 +99,8 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
                                         type={type || 'text'}
                                         hiddenLabel
                                         id={name}
-                                        error={!!errors[name]}
-                                        helperText={errors[name]?.message}
+                                        error={!!errors[name] || !!notificationError[name]}
+                                        helperText={errors[name]?.message || notificationError[name]}
                                         FormHelperTextProps={{
                                             sx: { margin: '4px 0 0' }
                                         }}
@@ -130,7 +134,6 @@ const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, e
                     <SubmitButton
                         fullWidth
                         size="medium"
-                        onClick={clearInvalidError}
                         loading={isLoading}
                         loadingPosition="end"
                         variant="contained"

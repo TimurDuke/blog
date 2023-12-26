@@ -1,7 +1,7 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {fieldLoginConfig} from "../../../utils/inputRuleUtils";
-import AuthorizationForm from "../../../components/UI/Form/AuthorizationForm";
+import AuthorizationForm from "../../../components/Forms/AuthorizationForm";
 import {useLoginUserMutation} from "../../../services/UserService";
 import {articlesPath, loginPath} from "../../../routes/routePaths";
 

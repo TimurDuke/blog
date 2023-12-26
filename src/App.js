@@ -5,7 +5,7 @@ import {theme} from "./muiTheme";
 import store from "./store/configureStore";
 import AppRoutes from "./routes/AppRoutes";
 import Layout from "./components/UI/Layout";
-import NotificationDialog from "./components/NotificationDialog";
+import NotificationDialog from "./components/UI/NotificationDialog";
 
 const App = () => (
     <ThemeProvider theme={theme}>

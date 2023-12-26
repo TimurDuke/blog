@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {Snackbar, Alert} from "@mui/material";
 import Grow from '@mui/material/Grow';
 import Slide from '@mui/material/Slide';
-import {clearMessageAndType, closeNotification} from "../../store/actions/notificationActions";
+import {clearMessageAndType, closeNotification} from "../../../store/actions/notificationActions";
 
 const NotificationDialog = () => {
     const { isOpen, message, type } = useSelector((state) => state.notification);
@@ -12,9 +12,11 @@ const NotificationDialog = () => {
     const handleClose = () => {
         dispatch(closeNotification());
 
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             dispatch(clearMessageAndType());
         }, 1000)
+
+        return () => clearTimeout(timeout);
     };
 
     return (

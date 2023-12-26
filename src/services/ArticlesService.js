@@ -10,10 +10,14 @@ export const articlesAPI = createApi({
     tagTypes: ['Articles'],
     endpoints: (build) => ({
         getAllArticles: build.query({
-            query: (page = 1) => ({
-                url: `articles?limit=${ARTICLES_LIMIT_COUNT}&offset=${page}`,
-                headers: getHeaders()
-            }),
+            query: (page = 1) => {
+                const requestPage = page === 1 ? 0 : (page * ARTICLES_LIMIT_COUNT) - ARTICLES_LIMIT_COUNT;
+
+                return {
+                    url: `articles?limit=${ARTICLES_LIMIT_COUNT}&offset=${requestPage}`,
+                    headers: getHeaders()
+                }
+            },
             keepUnusedDataFor: 5,
             providesTags: (result) => result?.articles
                 ? [
@@ -83,6 +87,38 @@ export const articlesAPI = createApi({
                 );
             },
         }),
+        addFavoriteArticle: build.mutation({
+            query: (slug) => ({
+                url: `articles/${slug}/favorite`,
+                method: 'POST',
+                headers: getHeaders()
+            }),
+            invalidatesTags: [{type: 'Articles', slug: 'LIST'}],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                await handleNotification(
+                    queryFulfilled,
+                    dispatch,
+                    'The article has been successfully added to favorites!',
+                    'success'
+                );
+            },
+        }),
+        deleteFavoriteArticle: build.mutation({
+            query: (slug) => ({
+                url: `articles/${slug}/favorite`,
+                method: 'DELETE',
+                headers: getHeaders()
+            }),
+            invalidatesTags: [{type: 'Articles', slug: 'LIST'}],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                await handleNotification(
+                    queryFulfilled,
+                    dispatch,
+                    'The article has been successfully removed from favorites!',
+                    'success'
+                );
+            },
+        }),
     }),
 });
 
@@ -91,5 +127,7 @@ export const {
     useGetArticleQuery,
     useCreateArticleMutation,
     useUpdateArticleMutation,
-    useDeleteArticleMutation
+    useDeleteArticleMutation,
+    useAddFavoriteArticleMutation,
+    useDeleteFavoriteArticleMutation,
 } = articlesAPI;
