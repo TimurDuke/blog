@@ -12,7 +12,7 @@ import {
     TagsBlock,
     Tag,
 } from "./ArticleCardStyles";
-import PromptModal from "../UI/ConfirmPopover";
+import PromptModal from "../ConfirmPopover";
 
 const ArticleCard = (
     {
@@ -46,9 +46,13 @@ const ArticleCard = (
         setAnchorEl(null);
     };
 
-    const showActionButton = () => isDetails && author['username'] === user?.username;
+    const showActionButtons = isDetails && author['username'] === user?.username;
 
-    const showArticleBody = () => isDetails && !!body.length;
+    const showArticleBody = isDetails && !!body.length;
+
+    const addFavoriteHandler = () => user ? addFavorite(slug) : null;
+
+    const deleteFavoriteHandler = () => user ? deleteFavorite(slug) : null;
 
     return (
         <Card style={{marginBottom: !body.length ? '20px' : '0' }}>
@@ -67,12 +71,14 @@ const ArticleCard = (
                         <Box style={{display: "flex"}}>
                             {isFavorite ?
                                 <Favorite
+                                    aria-disabled={!user}
                                     color="error"
                                     style={{margin: '5px 3px 0 0', cursor: 'pointer'}}
-                                    onClick={() => deleteFavorite(slug)}
+                                    onClick={deleteFavoriteHandler}
                                 /> :
                                 <FavoriteBorder
-                                    onClick={() => addFavorite(slug)}
+                                    aria-disabled={!user}
+                                    onClick={addFavoriteHandler}
                                     color="action"
                                     style={{margin: '5px 3px 0 0', cursor: 'pointer'}}
                                 />
@@ -121,7 +127,7 @@ const ArticleCard = (
                     >
                         {description}
                     </Typography>
-                    {showActionButton() &&
+                    {showActionButtons &&
                         <Box>
                             <Button
                                 variant='outlined'
@@ -151,7 +157,7 @@ const ArticleCard = (
                         </Box>
                     }
                 </Box>
-                {showArticleBody() &&
+                {showArticleBody &&
                     <div>
                         {body}
                     </div>

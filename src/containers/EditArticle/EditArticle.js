@@ -49,7 +49,7 @@ const EditArticle = () => {
 
     return (
         <>
-            <GoBackButton/>
+            <GoBackButton disabled={isArticleLoading || isUpdateLoading}/>
             <ArticleForm
                 mode='update'
                 fieldConfig={fieldArticleConfig}

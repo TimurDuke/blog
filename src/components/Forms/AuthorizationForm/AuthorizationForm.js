@@ -6,7 +6,6 @@ import {Link} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
-import {getRepeatPasswordRules} from "../../../utils/formUtils";
 import {
     AccountCheckBlock,
     TermsDiv,
@@ -24,6 +23,7 @@ import {
 } from "../FormStyles";
 import {loginPath, registerPath} from "../../../routes/routePaths";
 import {clearError} from "../../../store/actions/notificationActions";
+import {getRepeatPasswordRules} from "../../../utils/inputRuleUtils";
 
 const AuthorizationForm = ({isRegister, fieldConfig, submitHandler, isLoading, error}) => {
     const [generalError, setGeneralError] = useState('');

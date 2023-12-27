@@ -2,8 +2,9 @@ import React from 'react';
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PropTypes from "prop-types";
 
-const GoBackButton = () => {
+const GoBackButton = ({disabled = false}) => {
     const navigate = useNavigate();
 
     const goBack = () => {
@@ -16,6 +17,7 @@ const GoBackButton = () => {
             color='primary'
             onClick={goBack}
             startIcon={<ArrowBackIcon/>}
+            disabled={disabled}
             sx={{fontSize: '16px', background: '#fff', marginBottom: '10px'}}
         >
             Back
@@ -24,3 +26,7 @@ const GoBackButton = () => {
 };
 
 export default GoBackButton;
+
+GoBackButton.propTypes = {
+    disabled: PropTypes.bool,
+};

@@ -1,26 +1,31 @@
 import React, {useEffect} from 'react';
 import {Pagination} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {
     useAddFavoriteArticleMutation,
     useDeleteFavoriteArticleMutation,
     useGetAllArticlesQuery
 } from "../../services/ArticlesService";
-import ArticleCard from "../../components/ArticleCard";
+import ArticleCard from "../../components/UI/ArticleCard";
 import {formattedDate} from "../../utils/articleUtils";
 import {setPage} from "../../store/actions/articlesActions";
 import {loginPath, logoutPath, registerPath} from "../../routes/routePaths";
+import SkeletonArticleCard from "../../components/UI/SkeletonArticleCard";
+import {ARTICLES_LIMIT_COUNT} from "../../components/constants";
 
 const Articles = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const { page } = useSelector(state => state.articles);
     const { user } = useSelector(state => state.user);
 
-    const { data, isFetching, refetch} = useGetAllArticlesQuery(page);
+    const { data, isFetching, refetch} = useGetAllArticlesQuery(
+            (page !== searchParams.get('page')) && searchParams.get('page') ? searchParams.get('page') : page
+    );
 
     const [addFavorite, {isLoading: addFavoriteLoading}] = useAddFavoriteArticleMutation();
     const [deleteFavorite, {isLoading: deleteFavoriteLoading}] = useDeleteFavoriteArticleMutation();
@@ -40,7 +45,6 @@ const Articles = () => {
     useEffect(() => {
         if (location.state?.articlesPage) {
             const { articlesPage } = location.state;
-
             dispatch(setPage(articlesPage));
 
             // Clear location state
@@ -49,12 +53,11 @@ const Articles = () => {
 
     }, [dispatch, location, navigate]);
 
-    if (isFetching || addFavoriteLoading || deleteFavoriteLoading) {
-        return <h2>Loading...</h2>
-    }
+    const isLoading = isFetching || addFavoriteLoading || deleteFavoriteLoading;
 
     const paginationHandler = (_, selectedPage) => {
         dispatch(setPage(selectedPage));
+        setSearchParams({page: selectedPage});
     };
 
     const addFavoriteHandler = async slug => {
@@ -77,7 +80,13 @@ const Articles = () => {
 
     return (
         <>
-            {data?.articles && data?.articles.map(article => (
+            {isLoading &&
+                (
+                    Array.from({ length: ARTICLES_LIMIT_COUNT }, (_, index) => index)
+                        .map(index => <SkeletonArticleCard key={index}/>)
+                )
+            }
+            {(data?.articles && !isLoading) && data?.articles.map(article => (
                 <ArticleCard
                     key={article.slug}
                     slug={article.slug}
@@ -99,7 +108,7 @@ const Articles = () => {
                     shape="rounded"
                     color="primary"
                     onChange={paginationHandler}
-                    page={page}
+                    page={page || parseInt(searchParams.get('page'), 10)}
                 />
             }
         </>

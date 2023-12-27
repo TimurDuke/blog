@@ -2,10 +2,11 @@ import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useDeleteArticleMutation, useGetArticleQuery} from "../../services/ArticlesService";
-import ArticleCard from "../../components/ArticleCard";
+import ArticleCard from "../../components/UI/ArticleCard";
 import {createFormattedParagraphs, formattedDate} from "../../utils/articleUtils";
 import GoBackButton from "../../components/UI/GoBackButton";
 import {articlesPath} from "../../routes/routePaths";
+import SkeletonArticleCard from "../../components/UI/SkeletonArticleCard";
 
 const ArticleDetails = () => {
     const { slug } = useParams();
@@ -23,9 +24,7 @@ const ArticleDetails = () => {
 
     const finalArticleData = articleFromCache ?? articleData?.article;
 
-    if (isArticleLoading || isDeleteLoading) {
-        return <h2>Loading...</h2>
-    }
+    const isLoading = isArticleLoading || isDeleteLoading;
 
     const deleteArticleHandler = async () => {
         try {
@@ -35,22 +34,27 @@ const ArticleDetails = () => {
         } catch (e) {}
     };
 
-    return finalArticleData && (
+    return (
         <>
-            <GoBackButton/>
-            <ArticleCard
-                isDetails
-                deleteArticle={deleteArticleHandler}
-                slug={finalArticleData?.slug}
-                title={finalArticleData?.title}
-                description={finalArticleData?.description}
-                favoritesCount={finalArticleData?.favoritesCount}
-                isFavorite={finalArticleData?.favorited}
-                tagList={finalArticleData?.tagList}
-                date={formattedDate(finalArticleData['createdAt'])}
-                author={finalArticleData?.author}
-                body={createFormattedParagraphs(finalArticleData?.body)}
-            />
+            <GoBackButton disabled={isLoading}/>
+            {isLoading && <SkeletonArticleCard/>}
+            {finalArticleData &&
+                <>
+                    <ArticleCard
+                        isDetails
+                        deleteArticle={deleteArticleHandler}
+                        slug={finalArticleData?.slug}
+                        title={finalArticleData?.title}
+                        description={finalArticleData?.description}
+                        favoritesCount={finalArticleData?.favoritesCount}
+                        isFavorite={finalArticleData?.favorited}
+                        tagList={finalArticleData?.tagList}
+                        date={formattedDate(finalArticleData['createdAt'])}
+                        author={finalArticleData?.author}
+                        body={createFormattedParagraphs(finalArticleData?.body)}
+                    />
+                </>
+            }
         </>
     );
 };
