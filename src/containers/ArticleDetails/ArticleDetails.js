@@ -38,7 +38,7 @@ const ArticleDetails = () => {
         <>
             <GoBackButton disabled={isLoading}/>
             {isLoading && <SkeletonArticleCard/>}
-            {finalArticleData &&
+            {finalArticleData && !isLoading &&
                 <>
                     <ArticleCard
                         isDetails
