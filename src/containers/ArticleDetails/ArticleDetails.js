@@ -36,7 +36,7 @@ const ArticleDetails = () => {
 
     return (
         <>
-            <GoBackButton disabled={isLoading}/>
+            {finalArticleData && <GoBackButton disabled={isLoading}/>}
             {isLoading && <SkeletonArticleCard/>}
             {finalArticleData && !isLoading &&
                 <>

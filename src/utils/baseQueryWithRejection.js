@@ -13,7 +13,6 @@ export const baseQueryWithRejection = async (args, api, extraOptions) => {
         if (result.error.data?.errors) {
             api.dispatch(setError(result.error.data?.errors));
         }
-
         api.dispatch(showNotification({
             message: result.error.data?.message || `An error occurred: ${result.error.status}`,
             type: 'error'

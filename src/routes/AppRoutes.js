@@ -64,6 +64,7 @@ const AppRoutes = () => {
                     </ProtectedRoute>
                 }
             />
+            <Route path="*" element={<h2 style={{textAlign: 'center'}}>Page not found :C</h2>} />
         </Routes>
     );
 }
