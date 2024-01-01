@@ -9,7 +9,7 @@ export const imgBbService = createApi({
                 const formData = new FormData();
                 formData.append('image', imageFile);
                 return {
-                    url: `upload?expiration=60&key=8172ceb7b45d468fd39d0e7ee9dd2743`,
+                    url: `upload?expiration=600&key=8172ceb7b45d468fd39d0e7ee9dd2743`,
                     method: 'POST',
                     body: formData,
                 };
