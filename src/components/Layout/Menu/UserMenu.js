@@ -13,12 +13,14 @@ import {
     Tooltip,
     Typography
 } from "@mui/material";
-import {logoutUser} from "../../../../store/actions/userActions";
-import {articlesPath, logoutPath} from "../../../../routes/routePaths";
+import {logoutUser} from "../../../store/actions/userActions";
+import {articlesPath, logoutPath} from "../../../routes/routePaths";
+import {useIsMobile} from "../../../hooks";
 
 const UserMenu = ({ user }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const isMobile = useIsMobile();
 
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -41,19 +43,21 @@ const UserMenu = ({ user }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  flexDirection: {xs: 'column', sm: 'row'}
+                  flexDirection: {xs: 'row'}
               }}
         >
-            <Button
-                variant='outlined'
-                color='success'
-                size='small'
-                component={Link}
-                to='/new-article'
-                sx={{textTransform: 'none', color: '#52C41A', borderColor: '#52C41A', fontSize: '15px'}}
-            >
-                Create article
-            </Button>
+            {!isMobile &&
+                <Button
+                    variant='outlined'
+                    color='success'
+                    size='small'
+                    component={Link}
+                    to='/new-article'
+                    sx={{textTransform: 'none', color: '#52C41A', borderColor: '#52C41A', fontSize: '15px'}}
+                >
+                    Create article
+                </Button>
+            }
             <Box sx={{display: 'flex', alignItems: 'center', margin: '0 20px'}}>
                 <Button
                     onClick={handleOpenUserMenu}
@@ -83,6 +87,18 @@ const UserMenu = ({ user }) => {
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUserMenu}
                     >
+                        {isMobile &&
+                            <MenuItem onClick={handleCloseUserMenu}>
+                                <Typography
+                                    textAlign="center"
+                                    component={Link}
+                                    to='/new-article'
+                                    sx={{ textDecoration: 'none', color: '#52C41A' }}
+                                >
+                                    Create article
+                                </Typography>
+                            </MenuItem>
+                        }
                         <MenuItem onClick={handleCloseUserMenu}>
                             <Typography
                                 textAlign="center"

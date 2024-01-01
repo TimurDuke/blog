@@ -2,11 +2,11 @@ import React from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useDeleteArticleMutation, useGetArticleQuery} from "../../services/ArticlesService";
-import ArticleCard from "../../components/UI/ArticleCard";
+import ArticleCard from "../../components/ArticleCard";
 import {createFormattedParagraphs, formattedDate} from "../../utils/articleUtils";
 import GoBackButton from "../../components/UI/GoBackButton";
 import {articlesPath} from "../../routes/routePaths";
-import SkeletonArticleCard from "../../components/UI/SkeletonArticleCard";
+import SkeletonArticleCard from "../../components/SkeletonArticleCard";
 
 const ArticleDetails = () => {
     const { slug } = useParams();

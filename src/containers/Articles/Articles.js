@@ -7,12 +7,12 @@ import {
     useDeleteFavoriteArticleMutation,
     useGetAllArticlesQuery
 } from "../../services/ArticlesService";
-import ArticleCard from "../../components/UI/ArticleCard";
+import ArticleCard from "../../components/ArticleCard";
 import {formattedDate} from "../../utils/articleUtils";
 import {setPage} from "../../store/actions/articlesActions";
 import {loginPath, logoutPath, registerPath} from "../../routes/routePaths";
-import SkeletonArticleCard from "../../components/UI/SkeletonArticleCard";
-import {ARTICLES_LIMIT_COUNT} from "../../components/constants";
+import SkeletonArticleCard from "../../components/SkeletonArticleCard";
+import {ARTICLES_LIMIT_COUNT} from "../../constants";
 
 const Articles = () => {
     const dispatch = useDispatch();

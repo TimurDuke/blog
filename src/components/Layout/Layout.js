@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import Anonymous from "./Menu/Anonymous";
 import UserMenu from "./Menu/UserMenu";
-import {articlesPath} from "../../../routes/routePaths";
+import {articlesPath} from "../../routes/routePaths";
 
 const WrapperBox = styled(Box)({
     padding: '20px 15px',

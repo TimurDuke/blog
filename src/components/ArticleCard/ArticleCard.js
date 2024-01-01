@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from "prop-types";
-import {Avatar, Box, Button, Card, CardContent, Typography} from "@mui/material";
+import {Avatar, Box, Button, Card, Typography} from "@mui/material";
 import {FavoriteBorder, Favorite} from '@mui/icons-material';
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
@@ -10,9 +10,9 @@ import {
     RightBlock,
     ArticleTitleBlock,
     TagsBlock,
-    Tag,
+    Tag, CardBottomContent,
 } from "./ArticleCardStyles";
-import PromptModal from "../ConfirmPopover";
+import PromptModal from "../UI/ConfirmPopover";
 
 const ArticleCard = (
     {
@@ -115,7 +115,7 @@ const ArticleCard = (
                     />
                 </RightBlock>
             </CardInnerContent>
-            <CardContent sx={{paddingTop: '0'}}>
+            <CardBottomContent>
                 <Box sx={{display: isDetails ? 'flex' : 'block', justifyContent: 'space-between'}}>
                     <Typography
                         style={{
@@ -162,7 +162,7 @@ const ArticleCard = (
                         {body}
                     </div>
                 }
-            </CardContent>
+            </CardBottomContent>
         </Card>
     );
 }

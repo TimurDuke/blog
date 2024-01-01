@@ -1,5 +1,5 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
-import {ARTICLES_LIMIT_COUNT} from "../components/constants";
+import {ARTICLES_LIMIT_COUNT} from "../constants";
 import {getHeaders} from "../utils/headerUtils";
 import {handleNotification} from "../notificationHelper";
 import {baseQueryWithRejection} from "../utils/baseQueryWithRejection";
