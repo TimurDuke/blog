@@ -4,11 +4,11 @@ import {Button} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PropTypes from "prop-types";
 
-const GoBackButton = ({disabled = false}) => {
+const GoBackButton = ({disabled = false, to = -1}) => {
     const navigate = useNavigate();
 
     const goBack = () => {
-        navigate(-1);
+        navigate(to);
     };
 
     return (
@@ -29,4 +29,8 @@ export default GoBackButton;
 
 GoBackButton.propTypes = {
     disabled: PropTypes.bool,
+    to: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
 };

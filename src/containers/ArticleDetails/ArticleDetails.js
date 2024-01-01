@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
     useAddFavoriteArticleMutation,
@@ -17,6 +17,8 @@ const ArticleDetails = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+
     const [finalArticleData, setFinalArticleData] = useState();
 
     const error = useSelector(state => state.notification.error);
@@ -53,6 +55,14 @@ const ArticleDetails = () => {
         }
     }, [favoriteArticleData, unFavoriteArticleData]);
 
+    useEffect(() => {
+        const { state } = location;
+
+        if (state?.updatedArticle) {
+            setFinalArticleData(state?.updatedArticle);
+        }
+    }, [location]);
+
     const isLoading =
         isArticleLoading ||
         isDeleteLoading ||
@@ -86,7 +96,7 @@ const ArticleDetails = () => {
     };
     return (
         <>
-            {finalArticleData && <GoBackButton disabled={isLoading}/>}
+            {finalArticleData && <GoBackButton to='/articles' disabled={isLoading}/>}
             {isLoading && <SkeletonArticleCard/>}
             {finalArticleData && !isLoading &&
                 <>

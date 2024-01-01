@@ -4,7 +4,6 @@ import {useSelector} from "react-redux";
 import {useGetArticleQuery, useUpdateArticleMutation} from "../../services/ArticlesService";
 import ArticleForm from "../../components/Forms/ArticleForm";
 import {fieldArticleConfig} from "../../utils/inputRuleUtils";
-import {articlesPath} from "../../routes/routePaths";
 import GoBackButton from "../../components/UI/GoBackButton";
 
 const EditArticle = () => {
@@ -39,8 +38,11 @@ const EditArticle = () => {
 
     const submitHandler = async article => {
         try {
-            await updateArticle({slug, article}).unwrap();
-            navigate(articlesPath);
+            const response = await updateArticle({slug, article}).unwrap();
+
+            if (response?.article?.slug) {
+                navigate(`/articles/${response.article.slug}`, { state: { updatedArticle: response.article } });
+            }
         } catch (e) {
             // eslint-disable-next-line no-console
             console.error(e);
