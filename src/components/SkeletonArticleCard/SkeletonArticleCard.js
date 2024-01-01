@@ -1,7 +1,7 @@
 import React from 'react';
-import {Box, Card, CardContent, Skeleton} from "@mui/material";
+import {Box, Card, Skeleton} from "@mui/material";
 import {
-    ArticleTitleBlock,
+    ArticleTitleBlock, CardBottomContent,
     CardInnerContent,
     LeftBlock,
     RightBlock,
@@ -30,9 +30,9 @@ const SkeletonArticleCard = () => (
                     <Skeleton sx={{marginLeft: '15px'}} animation="wave" variant="circular" width={46} height={46} />
                 </RightBlock>
             </CardInnerContent>
-            <CardContent sx={{paddingTop: '0'}}>
+            <CardBottomContent sx={{paddingTop: '0'}}>
                 <Skeleton animation='wave' width='100%' height={30}/>
-            </CardContent>
+            </CardBottomContent>
         </Card>
     </>
 );

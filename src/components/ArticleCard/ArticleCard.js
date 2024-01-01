@@ -9,8 +9,11 @@ import {
     LeftBlock,
     RightBlock,
     ArticleTitleBlock,
+    ArticleTitle,
+    ArticleDescription,
     TagsBlock,
-    Tag, CardBottomContent,
+    Tag,
+    CardBottomContent,
 } from "./ArticleCardStyles";
 import PromptModal from "../UI/ConfirmPopover";
 
@@ -50,35 +53,49 @@ const ArticleCard = (
 
     const showArticleBody = isDetails && !!body.length;
 
-    const addFavoriteHandler = () => user ? addFavorite(slug) : null;
+    const favoriteHandler = type => {
+        if (!user) return;
 
-    const deleteFavoriteHandler = () => user ? deleteFavorite(slug) : null;
+        switch (type) {
+            case 'add':
+                addFavorite(slug);
+                break;
+            case 'delete':
+                deleteFavorite(slug);
+                break;
+            default:
+                break;
+        }
+    }
 
     return (
-        <Card style={{marginBottom: !body.length ? '20px' : '0' }}>
+        <Card style={{marginBottom: isDetails ? '0' : '20px',}}>
             <CardInnerContent>
                 <LeftBlock>
                     <ArticleTitleBlock>
-                        <Typography
+                        <ArticleTitle
                             variant="h5"
                             color="primary"
-                            style={{marginRight: '15px', textDecoration: 'none'}}
-                            component={!isDetails ? Link : Typography}
+                            sx={{
+                                textDecoration: isDetails ? 'none' : 'underline',
+                                cursor: isDetails ? 'default' : 'pointer',
+                            }}
+                            component={isDetails ? Typography : Link}
                             to={`/articles/${slug}`}
                         >
                             {title}
-                        </Typography>
+                        </ArticleTitle>
                         <Box style={{display: "flex"}}>
                             {isFavorite ?
                                 <Favorite
                                     aria-disabled={!user}
                                     color="error"
                                     style={{margin: '5px 3px 0 0', cursor: 'pointer'}}
-                                    onClick={deleteFavoriteHandler}
+                                    onClick={() => favoriteHandler('delete')}
                                 /> :
                                 <FavoriteBorder
                                     aria-disabled={!user}
-                                    onClick={addFavoriteHandler}
+                                    onClick={() => favoriteHandler('add')}
                                     color="action"
                                     style={{margin: '5px 3px 0 0', cursor: 'pointer'}}
                                 />
@@ -117,16 +134,14 @@ const ArticleCard = (
             </CardInnerContent>
             <CardBottomContent>
                 <Box sx={{display: isDetails ? 'flex' : 'block', justifyContent: 'space-between'}}>
-                    <Typography
+                    <ArticleDescription
                         style={{
-                            fontSize: '14px',
                             color: isDetails ? '#00000080' : '#000',
-                            marginBottom: '10px',
                             width: isDetails ? '70%' : '100%',
                         }}
                     >
                         {description}
-                    </Typography>
+                    </ArticleDescription>
                     {showActionButtons &&
                         <Box>
                             <Button

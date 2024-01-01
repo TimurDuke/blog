@@ -44,6 +44,17 @@ export const ArticleTitleBlock = styled(Box)({
     marginBottom: '10px',
 });
 
+export const ArticleTitle = styled(Typography)({
+    marginRight: '15px',
+    wordBreak: 'break-all',
+});
+
+export const ArticleDescription = styled(Typography)({
+    fontSize: '14px',
+    marginBottom: '10px',
+    cursor: 'pointer',
+});
+
 export const TagsBlock = styled(Box)({
     display: 'flex',
     gap: '10px',

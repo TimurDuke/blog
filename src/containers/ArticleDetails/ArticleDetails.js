@@ -1,18 +1,33 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {useDeleteArticleMutation, useGetArticleQuery} from "../../services/ArticlesService";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    useAddFavoriteArticleMutation,
+    useDeleteArticleMutation, useDeleteFavoriteArticleMutation,
+    useGetArticleQuery
+} from "../../services/ArticlesService";
 import ArticleCard from "../../components/ArticleCard";
 import {createFormattedParagraphs, formattedDate} from "../../utils/articleUtils";
 import GoBackButton from "../../components/UI/GoBackButton";
 import {articlesPath} from "../../routes/routePaths";
 import SkeletonArticleCard from "../../components/SkeletonArticleCard";
+import {clearError} from "../../store/actions/notificationActions";
 
 const ArticleDetails = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [finalArticleData, setFinalArticleData] = useState();
 
-    const { articles } = useSelector(state => state.articles)
+    const error = useSelector(state => state.notification.error);
+    const { articles } = useSelector(state => state.articles);
+
+    useEffect(() => {
+        if (!!Object.keys(error).length) {
+            navigate(articlesPath);
+            dispatch(clearError());
+        }
+    }, [dispatch, error, navigate]);
 
     const articleFromCache = articles?.find(article => article.slug === slug);
 
@@ -22,9 +37,27 @@ const ArticleDetails = () => {
 
     const [deleteArticle, { isLoading: isDeleteLoading }] = useDeleteArticleMutation();
 
-    const finalArticleData = articleFromCache ?? articleData?.article;
+    const [addFavorite, {data: favoriteArticleData, isLoading: addFavoriteLoading}] = useAddFavoriteArticleMutation();
+    const [deleteFavorite, {data: unFavoriteArticleData, isLoading: deleteFavoriteLoading}] = useDeleteFavoriteArticleMutation();
 
-    const isLoading = isArticleLoading || isDeleteLoading;
+    useEffect(() => {
+        setFinalArticleData(articleFromCache ?? articleData?.article)
+    }, [articleFromCache, articleData]);
+
+    useEffect(() => {
+        if (favoriteArticleData?.article) {
+            setFinalArticleData(favoriteArticleData.article);
+        }
+        if (unFavoriteArticleData?.article) {
+            setFinalArticleData(unFavoriteArticleData.article);
+        }
+    }, [favoriteArticleData, unFavoriteArticleData]);
+
+    const isLoading =
+        isArticleLoading ||
+        isDeleteLoading ||
+        addFavoriteLoading ||
+        deleteFavoriteLoading;
 
     const deleteArticleHandler = async () => {
         try {
@@ -34,6 +67,23 @@ const ArticleDetails = () => {
         } catch (e) {}
     };
 
+    const addFavoriteHandler = async slugText => {
+        try {
+            if (slugText) {
+                await addFavorite(slugText).unwrap();
+            }
+            // eslint-disable-next-line no-empty
+        } catch (e) {}
+    };
+
+    const deleteFavoriteHandler = async slugText => {
+        try {
+            if (slugText) {
+                await deleteFavorite(slugText).unwrap();
+            }
+            // eslint-disable-next-line no-empty
+        } catch (e) {}
+    };
     return (
         <>
             {finalArticleData && <GoBackButton disabled={isLoading}/>}
@@ -52,6 +102,8 @@ const ArticleDetails = () => {
                         date={formattedDate(finalArticleData['createdAt'])}
                         author={finalArticleData?.author}
                         body={createFormattedParagraphs(finalArticleData?.body)}
+                        addFavorite={addFavoriteHandler}
+                        deleteFavorite={deleteFavoriteHandler}
                     />
                 </>
             }

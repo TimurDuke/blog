@@ -58,6 +58,10 @@ const Articles = () => {
     const paginationHandler = (_, selectedPage) => {
         dispatch(setPage(selectedPage));
         setSearchParams({page: selectedPage});
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
     };
 
     const addFavoriteHandler = async slug => {
@@ -86,30 +90,32 @@ const Articles = () => {
                         .map(index => <SkeletonArticleCard key={index}/>)
                 )
             }
-            {(data?.articles && !isLoading) && data?.articles.map(article => (
-                <ArticleCard
-                    key={article.slug}
-                    slug={article.slug}
-                    title={article.title}
-                    description={article.description}
-                    favoritesCount={article.favoritesCount}
-                    isFavorite={article.favorited}
-                    author={article.author}
-                    tagList={article.tagList}
-                    date={formattedDate(article['createdAt'])}
-                    addFavorite={addFavoriteHandler}
-                    deleteFavorite={deleteFavoriteHandler}
-                />
-            ))}
-            {data?.articlesCount &&
-                <Pagination
-                    style={{display: 'flex', justifyContent: 'center'}}
-                    count={data.articlesCount}
-                    shape="rounded"
-                    color="primary"
-                    onChange={paginationHandler}
-                    page={page || parseInt(searchParams.get('page'), 10)}
-                />
+            {(!!data?.articles?.length && data?.articlesCount && !isLoading) &&
+                <>
+                    {data?.articles.map(article => (
+                        <ArticleCard
+                            key={article.slug}
+                            slug={article.slug}
+                            title={article.title}
+                            description={article.description}
+                            favoritesCount={article.favoritesCount}
+                            isFavorite={article.favorited}
+                            author={article.author}
+                            tagList={article.tagList}
+                            date={formattedDate(article['createdAt'])}
+                            addFavorite={addFavoriteHandler}
+                            deleteFavorite={deleteFavoriteHandler}
+                        />
+                    ))}
+                    <Pagination
+                        style={{display: 'flex', justifyContent: 'center'}}
+                        count={Math.ceil(data.articlesCount / ARTICLES_LIMIT_COUNT)}
+                        shape="rounded"
+                        color="primary"
+                        onChange={paginationHandler}
+                        page={parseInt(searchParams.get('page') || page, 10)}
+                    />
+                </>
             }
         </>
     );
