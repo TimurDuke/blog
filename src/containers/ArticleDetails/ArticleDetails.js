@@ -47,12 +47,14 @@ const ArticleDetails = () => {
     }, [articleFromCache, articleData]);
 
     useEffect(() => {
-        if (favoriteArticleData?.article) {
+        if (favoriteArticleData?.article && finalArticleData !== favoriteArticleData?.article) {
             setFinalArticleData(favoriteArticleData.article);
         }
-        if (unFavoriteArticleData?.article) {
+        if (unFavoriteArticleData?.article && finalArticleData !== unFavoriteArticleData?.article) {
             setFinalArticleData(unFavoriteArticleData.article);
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [favoriteArticleData, unFavoriteArticleData]);
 
     useEffect(() => {
@@ -94,6 +96,7 @@ const ArticleDetails = () => {
             // eslint-disable-next-line no-empty
         } catch (e) {}
     };
+
     return (
         <>
             {finalArticleData && <GoBackButton to='/articles' disabled={isLoading}/>}
