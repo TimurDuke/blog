@@ -106,7 +106,7 @@ const Articles = () => {
                         .map(index => <SkeletonArticleCard key={index}/>)
                 )
             }
-            {(!!data?.articles?.length && data?.articlesCount && !isLoading) ?
+            {(!!data?.articles?.length && data?.articlesCount && !isLoading) &&
                 <>
                     {data?.articles.map(article => (
                         <ArticleCard
@@ -131,9 +131,9 @@ const Articles = () => {
                         onChange={paginationHandler}
                         page={parseInt(searchParams.get('page') || page, 10)}
                     />
-                </> :
-                <h2 style={{textAlign: 'center'}}>No articles :C</h2>
+                </>
             }
+            {(!data?.articles.length && !isLoading) && <h2 style={{textAlign: 'center'}}>No articles :C</h2>}
         </>
     );
 };
