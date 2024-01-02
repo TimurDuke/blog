@@ -6,7 +6,7 @@ import {
     editProfilePath,
     loginPath,
     newArticlePath,
-    registerPath
+    registerPath, usersArticlesPath, usersFavoriteArticlesPath
 } from "./routePaths";
 import Articles from "../containers/Articles";
 import ArticleDetails from "../containers/ArticleDetails";
@@ -45,6 +45,22 @@ const AppRoutes = () => {
                 element={
                     <ProtectedRoute isAllowed={!!user}>
                         <EditProfile/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={usersArticlesPath}
+                element={
+                    <ProtectedRoute isAllowed={!!user}>
+                        <Articles/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={usersFavoriteArticlesPath}
+                element={
+                    <ProtectedRoute isAllowed={!!user}>
+                        <Articles/>
                     </ProtectedRoute>
                 }
             />

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pagination} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
@@ -22,15 +22,31 @@ const Articles = () => {
 
     const { page } = useSelector(state => state.articles);
     const { user } = useSelector(state => state.user);
+    const [queryParams, setQueryParams] = useState(null);
 
-    const { data, isFetching, refetch} = useGetAllArticlesQuery(
-            (page !== searchParams.get('page')) && searchParams.get('page') ? searchParams.get('page') : page
-    );
+    const currentPage = (page !== searchParams.get('page')) && searchParams.get('page') ? searchParams.get('page') : page;
+
+    const { data, isFetching, refetch} = useGetAllArticlesQuery({currentPage, queryParams});
 
     const [addFavorite, {isLoading: addFavoriteLoading}] = useAddFavoriteArticleMutation();
     const [deleteFavorite, {isLoading: deleteFavoriteLoading}] = useDeleteFavoriteArticleMutation();
 
     const fromPath = location.state?.from;
+
+    useEffect(() => {
+        if (location?.pathname) {
+            switch (location.pathname) {
+                case '/user/articles':
+                    setQueryParams({query: 'author', params: user.username});
+                    break;
+                case '/user/articles/favorite':
+                    setQueryParams({query: 'favorited', params: user.username});
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [location, user.username]);
 
     useEffect(() => {
         const authPaths = [registerPath, loginPath, logoutPath];
@@ -90,7 +106,7 @@ const Articles = () => {
                         .map(index => <SkeletonArticleCard key={index}/>)
                 )
             }
-            {(!!data?.articles?.length && data?.articlesCount && !isLoading) &&
+            {(!!data?.articles?.length && data?.articlesCount && !isLoading) ?
                 <>
                     {data?.articles.map(article => (
                         <ArticleCard
@@ -115,7 +131,8 @@ const Articles = () => {
                         onChange={paginationHandler}
                         page={parseInt(searchParams.get('page') || page, 10)}
                     />
-                </>
+                </> :
+                <h2 style={{textAlign: 'center'}}>No articles :C</h2>
             }
         </>
     );

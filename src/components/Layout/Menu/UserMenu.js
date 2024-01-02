@@ -14,7 +14,13 @@ import {
     Typography
 } from "@mui/material";
 import {logoutUser} from "../../../store/actions/userActions";
-import {articlesPath, logoutPath} from "../../../routes/routePaths";
+import {
+    articlesPath,
+    logoutPath,
+    newArticlePath,
+    usersArticlesPath,
+    usersFavoriteArticlesPath
+} from "../../../routes/routePaths";
 import {useIsMobile} from "../../../hooks";
 
 const UserMenu = ({ user }) => {
@@ -46,18 +52,42 @@ const UserMenu = ({ user }) => {
                   flexDirection: {xs: 'row'}
               }}
         >
-            {!isMobile &&
-                <Button
-                    variant='outlined'
-                    color='success'
-                    size='small'
-                    component={Link}
-                    to='/new-article'
-                    sx={{textTransform: 'none', color: '#52C41A', borderColor: '#52C41A', fontSize: '15px'}}
-                >
-                    Create article
-                </Button>
-            }
+            <Grid item gap={2} sx={{display: 'flex'}}>
+                {!isMobile &&
+                    <>
+                        <Button
+                            variant='outlined'
+                            color='primary'
+                            size='small'
+                            component={Link}
+                            to={usersArticlesPath}
+                            sx={{textTransform: 'none', fontSize: '15px'}}
+                        >
+                            My articles
+                        </Button>
+                        <Button
+                            variant='outlined'
+                            color='error'
+                            size='small'
+                            component={Link}
+                            to={usersFavoriteArticlesPath}
+                            sx={{textTransform: 'none', fontSize: '15px'}}
+                        >
+                            My favorites
+                        </Button>
+                        <Button
+                            variant='outlined'
+                            color='success'
+                            size='small'
+                            component={Link}
+                            to={newArticlePath}
+                            sx={{textTransform: 'none', fontSize: '15px'}}
+                        >
+                            Create article
+                        </Button>
+                    </>
+                }
+            </Grid>
             <Box sx={{display: 'flex', alignItems: 'center', margin: '0 20px'}}>
                 <Button
                     onClick={handleOpenUserMenu}
@@ -92,8 +122,32 @@ const UserMenu = ({ user }) => {
                                 <Typography
                                     textAlign="center"
                                     component={Link}
-                                    to='/new-article'
-                                    sx={{ textDecoration: 'none', color: '#52C41A' }}
+                                    to={usersArticlesPath}
+                                    sx={{ textDecoration: 'none', color: 'primary.main' }}
+                                >
+                                    My articles
+                                </Typography>
+                            </MenuItem>
+                        }
+                        {isMobile &&
+                            <MenuItem onClick={handleCloseUserMenu}>
+                                <Typography
+                                    textAlign="center"
+                                    component={Link}
+                                    to={usersFavoriteArticlesPath}
+                                    sx={{ textDecoration: 'none', color: 'error.main' }}
+                                >
+                                    My favorites
+                                </Typography>
+                            </MenuItem>
+                        }
+                        {isMobile &&
+                            <MenuItem onClick={handleCloseUserMenu}>
+                                <Typography
+                                    textAlign="center"
+                                    component={Link}
+                                    to={newArticlePath}
+                                    sx={{ textDecoration: 'none', color: 'success.main' }}
                                 >
                                     Create article
                                 </Typography>

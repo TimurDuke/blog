@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -18,7 +18,7 @@ const ArticleDetails = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
-
+    const previousPathRef = useRef();
     const [finalArticleData, setFinalArticleData] = useState();
 
     const error = useSelector(state => state.notification.error);
@@ -47,10 +47,10 @@ const ArticleDetails = () => {
     }, [articleFromCache, articleData]);
 
     useEffect(() => {
-        if (favoriteArticleData?.article && finalArticleData !== favoriteArticleData?.article) {
+        if (favoriteArticleData?.article && (finalArticleData !== favoriteArticleData?.article)) {
             setFinalArticleData(favoriteArticleData.article);
         }
-        if (unFavoriteArticleData?.article && finalArticleData !== unFavoriteArticleData?.article) {
+        if (unFavoriteArticleData?.article && (finalArticleData !== unFavoriteArticleData?.article)) {
             setFinalArticleData(unFavoriteArticleData.article);
         }
 
@@ -63,6 +63,7 @@ const ArticleDetails = () => {
         if (state?.updatedArticle) {
             setFinalArticleData(state?.updatedArticle);
         }
+        previousPathRef.current = state?.from || articlesPath;
     }, [location]);
 
     const isLoading =
@@ -99,7 +100,7 @@ const ArticleDetails = () => {
 
     return (
         <>
-            {finalArticleData && <GoBackButton to='/articles' disabled={isLoading}/>}
+            {finalArticleData && <GoBackButton to={previousPathRef.current} disabled={isLoading}/>}
             {isLoading && <SkeletonArticleCard/>}
             {finalArticleData && !isLoading &&
                 <>

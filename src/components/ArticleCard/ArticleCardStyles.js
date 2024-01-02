@@ -7,14 +7,14 @@ export const CardInnerContent = styled(CardContent)({
     color: '#404040',
     paddingBottom: '0',
     marginBottom: '10px',
-    '@media (max-width:600px)': {
+    '@media (max-width:768px)': {
         flexDirection: 'column-reverse',
     },
 });
 
 export const CardBottomContent = styled(CardContent)({
     paddingTop: '0',
-    '@media (max-width:600px)': {
+    '@media (max-width:768px)': {
         paddingBottom: '16px !important',
     },
 });
@@ -22,7 +22,7 @@ export const CardBottomContent = styled(CardContent)({
 
 export const LeftBlock = styled(Box)({
     width: '70%',
-    '@media (max-width:600px)': {
+    '@media (max-width:768px)': {
         width: '100%',
     },
 });
@@ -31,7 +31,7 @@ export const RightBlock = styled(Box)({
     width: '20%',
     display: 'flex',
     justifyContent: 'flex-end',
-    '@media (max-width:600px)': {
+    '@media (max-width:768px)': {
         width: '100%',
         justifyContent: 'flex-start',
         marginBottom: '8px',

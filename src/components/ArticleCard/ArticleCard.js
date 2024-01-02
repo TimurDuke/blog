@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import {Avatar, Box, Button, Card, Typography} from "@mui/material";
 import {FavoriteBorder, Favorite} from '@mui/icons-material';
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {
     CardInnerContent,
@@ -34,6 +34,8 @@ const ArticleCard = (
         deleteFavorite = () => {},
     }
 ) => {
+    const location = useLocation();
+
     const { user } = useSelector(state => state.user);
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -82,6 +84,7 @@ const ArticleCard = (
                             }}
                             component={isDetails ? Typography : Link}
                             to={`/articles/${slug}`}
+                            state={{ from: location?.pathname }}
                         >
                             {title}
                         </ArticleTitle>

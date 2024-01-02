@@ -10,11 +10,20 @@ export const articlesAPI = createApi({
     tagTypes: ['Articles'],
     endpoints: (build) => ({
         getAllArticles: build.query({
-            query: (page = 1) => {
-                const requestPage = page === 1 ? 0 : (page * ARTICLES_LIMIT_COUNT) - ARTICLES_LIMIT_COUNT;
+            query: (data) => {
+                const { currentPage, queryParams } = data;
+
+                const requestPage = currentPage === 1 ? 0 : (currentPage * ARTICLES_LIMIT_COUNT) - ARTICLES_LIMIT_COUNT;
+                let url;
+
+                if (queryParams) {
+                    url = `articles?limit=${ARTICLES_LIMIT_COUNT}&offset=${requestPage}&${queryParams?.query}=${queryParams?.params}`;
+                } else {
+                    url = `articles?limit=${ARTICLES_LIMIT_COUNT}&offset=${requestPage}`;
+                }
 
                 return {
-                    url: `articles?limit=${ARTICLES_LIMIT_COUNT}&offset=${requestPage}`,
+                    url,
                     headers: getHeaders()
                 }
             },

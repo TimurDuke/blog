@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {useGetArticleQuery, useUpdateArticleMutation} from "../../services/ArticlesService";
 import ArticleForm from "../../components/Forms/ArticleForm";
 import {fieldArticleConfig} from "../../utils/inputRuleUtils";
@@ -13,28 +12,26 @@ const EditArticle = () => {
 
     const [updateArticle, {isLoading: isUpdateLoading}] = useUpdateArticleMutation();
 
-    const { articles } = useSelector(state => state.articles)
-
-    const articleFromCache = articles?.find(article => article.slug === slug);
-
-    const { data: articleData, isLoading: isArticleLoading } = useGetArticleQuery(slug, {
-        skip: !!articleFromCache,
-    });
-
-    const finalArticleData = articleFromCache ?? articleData?.article;
+    const { data: articleData, isFetching: isArticleLoading } = useGetArticleQuery(slug,
+        {
+            skip: false,
+            refetchOnMountOrArgChange: true,
+        });
 
     useEffect(() => {
-        if (finalArticleData) {
-            const { title, description, body, tagList } = finalArticleData;
+        if (articleData?.article) {
+            const { title, description, body, tagList } = articleData.article;
+
+            const tags = !!tagList.map(tag => ({ tag })).length ? tagList.map(tag => ({ tag })) : [{tag: ''}];
 
             setInitialValues({
                 title,
                 description,
                 body,
-                tags: tagList.map(tag => ({ tag }))
+                tags
             });
         }
-    }, [finalArticleData]);
+    }, [articleData]);
 
     const submitHandler = async article => {
         try {
