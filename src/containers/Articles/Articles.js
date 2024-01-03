@@ -46,7 +46,7 @@ const Articles = () => {
                     break;
             }
         }
-    }, [location, user.username]);
+    }, [location, user?.username]);
 
     useEffect(() => {
         const authPaths = [registerPath, loginPath, logoutPath];
