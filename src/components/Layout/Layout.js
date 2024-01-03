@@ -10,7 +10,18 @@ import {articlesPath} from "../../routes/routePaths";
 const WrapperBox = styled(Box)({
     padding: '20px 15px',
     background: '#fff',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    '@media (max-width:400px)': {
+        padding: '10px 15px',
+    },
+});
+
+const GridContainer = styled(Grid)({
+   justifyContent: 'space-between',
+   alignItems: 'center',
+    '@media (max-width:400px)': {
+        flexDirection: 'column',
+    },
 });
 
 const Layout = ({children}) => {
@@ -19,10 +30,8 @@ const Layout = ({children}) => {
     return (
         <>
             <WrapperBox>
-                <Grid
+                <GridContainer
                     container
-                    justifyContent='space-between'
-                    alignItems='center'
                 >
                     <Grid item>
                         <Typography
@@ -35,10 +44,10 @@ const Layout = ({children}) => {
                             Articles
                         </Typography>
                     </Grid>
-                    <Grid item>
+                    <Grid item alignSelf={user ? 'flex-end' : 'center'}>
                         {user ? <UserMenu user={user}/> : <Anonymous/>}
                     </Grid>
-                </Grid>
+                </GridContainer>
             </WrapperBox>
             <Container maxWidth="lg" style={{paddingBottom: '15px', height: '100%'}}>
                 {children}
