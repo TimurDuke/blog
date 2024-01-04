@@ -1,5 +1,4 @@
 import {fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-// eslint-disable-next-line import/named
 import {setError, showNotification} from "../store/actions/notificationActions";
 import {apiUrl} from "../config";
 
